@@ -1,0 +1,27 @@
+- hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Make env for Docker
+      template:
+        src: templates/env_docker.j2
+        dest: '../.env'
+
+    - name: Make env for App
+      template:
+        src: templates/env_app.j2
+        dest: '../app/.env'
+
+    - name: Make dir
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0755
+      with_list:
+        - ../postgres/docker-entrypoint-initdb.d
+        - ../postgres/db
+
+    - name: Make instruction for create db
+      template:
+        src: templates/01_create_db.sql.j2
+        dest: '../postgres/docker-entrypoint-initdb.d/01_create_db.sql'
