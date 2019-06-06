@@ -7,6 +7,6 @@ const app = new Koa();
 app.use(indexRoute.routes());
 app.use(userRoute.routes());
 
-const server = app.listen(3000);
+const server = app.listen(4000);
 
 module.exports = server;

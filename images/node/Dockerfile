@@ -1,3 +1,3 @@
-FROM node:last
+FROM node:12
 
 WORKDIR /var/www/html

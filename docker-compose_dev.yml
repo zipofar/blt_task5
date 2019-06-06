@@ -3,17 +3,16 @@ version: '2.2'
 services:
 
   node:
-    container_name: app-blt5
     build: ./images/node
+    command: npm start
     volumes:
       - ./app:/var/www/html
     ports:
-      - "${WEBSERVER_PORT}:${WEBSERVER_PORT}"
+      - "${WEBSERVER_PORT}:4000"
     links:
       - postgres
 
   postgres:
-    container_name: db-blt5
     image: postgres:11.3
     volumes:
       - ./postgres/db:/var/lib/postgresql/data

@@ -19,9 +19,8 @@ compose-setup: yii install migrate-dev seed
 dev:
 	docker-compose -f docker-compose_dev.yml up -d
 
-
 kill:
-	docker-compose kill
+	docker-compose -f docker-compose_dev.yml kill
 
 ansible-vaults-encrypt:
 	ansible-vault encrypt ansible/production/group_vars/all/vault.yml
