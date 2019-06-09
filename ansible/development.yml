@@ -10,7 +10,7 @@
     - name: Make env for App
       template:
         src: templates/env_app.j2
-        dest: '../app/.env'
+        dest: '../.env_app'
 
     - name: Make dir
       file:

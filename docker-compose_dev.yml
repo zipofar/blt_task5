@@ -5,10 +5,12 @@ services:
   node:
     build: ./images/node
     command: npm start
+    env_file:
+      - ./.env_app
     volumes:
       - ./app:/var/www/html
     ports:
-      - "${WEBSERVER_PORT}:4000"
+      - "${WEBSERVER_PORT}:${APP_PORT}"
     links:
       - postgres
 
