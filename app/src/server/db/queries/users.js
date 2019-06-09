@@ -9,7 +9,7 @@ const getUserById = id => (
 );
 
 const getUserByUsername = username => (
-  knex('users').where('username', username).select('id', 'username', 'password')
+  knex('users').where('username', username).select('id', 'username', 'password').limit(1)
 );
 
 module.exports = {

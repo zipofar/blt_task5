@@ -1,14 +1,11 @@
 const _ = require('lodash');
 const { checkPasswordService, makeAccessTokenService } = require('../../services/auth');
 
-const isValidUser = user => (_.has(user, 'password'));
-const isValidRequest = request => (_.has(request, 'password'));
-
-const LoginAction = (user, request) => {
-  if (!isValidUser(user) || !isValidRequest(request)) {
-    return { error: 'Invalid user or request' };
+const LoginAction = (user, password) => {
+  if (!_.has(user, 'password')) {
+    return { error: 'Invalid user' };
   }
-  if (checkPasswordService(user.password, request.password)) {
+  if (checkPasswordService(user.password, password)) {
     const accessToken = makeAccessTokenService(user);
     return { ok: accessToken };
   }

@@ -3,7 +3,7 @@ exports.up = knex => (
     table.increments();
     table.string('username').unique().notNullable();
     table.string('password').notNullable();
-    table.string('admin').notNullable().defaultTo(false);
+    table.string('role').notNullable().defaultTo('user');
   })
 );
 

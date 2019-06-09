@@ -4,6 +4,4 @@ const checkPasswordService = (realHash, verifiablePass) => (
   bcrypt.compareSync(verifiablePass, realHash)
 );
 
-module.exports = {
-  checkPasswordService,
-};
+module.exports = checkPasswordService;

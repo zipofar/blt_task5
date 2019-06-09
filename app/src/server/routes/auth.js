@@ -6,11 +6,12 @@ const LoginAction = require('../actions/auth/LoginAction');
 const router = new Router();
 
 router.post('/auth/login', async (ctx) => {
-  const { username } = ctx.request.body;
+  const { username, password } = ctx.request.body;
   try {
-    const user = await q.getUserByUsername(username);
-    const { error: loginError, ok: jwtToken } = LoginAction(user, ctx.request.body);
-    if (loginError !== '') {
+    const users = await q.getUserByUsername(username);
+    const user = users[0];
+    const { error: loginError, ok: jwtToken } = LoginAction(user, password);
+    if (!_.isUndefined(loginError)) {
       ctx.status = 404;
       ctx.body = {
         status: 'error',
