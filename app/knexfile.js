@@ -5,7 +5,12 @@ const BASE_PATH = path.join(__dirname, 'src', 'server', 'db');
 const config = {
   development: {
     client: 'pg',
-    connection: 'postgres://localhost:5432/blt_task5',
+    connection: {
+      host: 'postgres',
+      user: 'blt5',
+      password: 'blt5',
+      database: 'blt5',
+    },
     migrations: {
       directory: path.join(BASE_PATH, 'migrations'),
     },
