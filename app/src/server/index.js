@@ -17,7 +17,7 @@ app.use(authRoute.routes());
 
 //app.use(jwt({ secret: jwtSecret }));
 // Protected routes by JWT
-app.use(userRoute.routes());
+app.use(userRoute.middleware());
 
 const server = app.listen(port);
 
