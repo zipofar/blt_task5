@@ -11,9 +11,12 @@ const jwtSecret = process.env.JWT_SECRET;
 const app = new Koa();
 
 app.use(bodyParser());
+// Public routes
 app.use(indexRoute.routes());
 app.use(authRoute.routes());
-app.use(jwt({ secret: jwtSecret }));
+
+//app.use(jwt({ secret: jwtSecret }));
+// Protected routes by JWT
 app.use(userRoute.routes());
 
 const server = app.listen(port);

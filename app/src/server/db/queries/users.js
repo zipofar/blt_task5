@@ -9,11 +9,16 @@ const getUserById = id => (
 );
 
 const getUserByUsername = username => (
-  knex('users').where('username', username).select('id', 'username', 'password').limit(1)
+  knex('users').where('username', username).first()
+);
+
+const createUser = ({ username, password }) => (
+  knex('users').insert({ username, password })
 );
 
 module.exports = {
   getAllUsers,
   getUserById,
   getUserByUsername,
+  createUser,
 };

@@ -27,4 +27,18 @@ router.get('/users/:id', async (ctx) => {
   }
 });
 
+router.post('/users', async (ctx) => {
+  const { username, password } = ctx.request.body;
+  try {
+    const user = await q.getUserByUsername(username);
+    console.log(user)
+    ctx.body = {
+      status: 'success',
+      data: user,
+    };
+  } catch (err) {
+
+  }
+});
+
 module.exports = router;

@@ -8,8 +8,7 @@ const router = new Router();
 router.post('/auth/login', async (ctx) => {
   const { username, password } = ctx.request.body;
   try {
-    const users = await q.getUserByUsername(username);
-    const user = users[0];
+    const user = await q.getUserByUsername(username);
     const { error: loginError, ok: jwtToken } = LoginAction(user, password);
     if (!_.isUndefined(loginError)) {
       ctx.status = 404;
