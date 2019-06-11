@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const knex = require('../connection');
 
 const getAllUsers = () => (
@@ -16,9 +17,22 @@ const createUser = ({ username, password }) => (
   knex('users').insert({ username, password })
 );
 
+const issetUser = async ({ id, username }) => {
+  if (!_.isUndefined(id)) {
+    const user = await getUserById(id);
+    return !_.isUndefined(user);
+  }
+  if (!_.isUndefined(username)) {
+    const user = await getUserByUsername(username);
+    return !_.isUndefined(user);
+  }
+  throw new Error('Variables is undefined');
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
   getUserByUsername,
   createUser,
+  issetUser,
 };

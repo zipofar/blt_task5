@@ -3,6 +3,7 @@ const bodyParser = require('koa-bodyparser');
 const jwt = require('koa-jwt');
 const indexRoute = require('./routes/index');
 const userRoute = require('./routes/users');
+const registrationRoute = require('./routes/registration');
 const authRoute = require('./routes/auth');
 
 const port = process.env.APP_PORT || 4000;
@@ -13,9 +14,10 @@ const app = new Koa();
 app.use(bodyParser());
 // Public routes
 app.use(indexRoute.routes());
+app.use(registrationRoute.middleware());
 app.use(authRoute.routes());
 
-//app.use(jwt({ secret: jwtSecret }));
+app.use(jwt({ secret: jwtSecret }));
 // Protected routes by JWT
 app.use(userRoute.middleware());
 
