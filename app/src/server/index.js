@@ -26,13 +26,13 @@ app.use(async (ctx, next) => {
 app.use(bodyParser());
 // Public routes
 app.use(indexRoute.routes());
-app.use(pageRoute.middleware());
 app.use(registrationRoute.middleware());
 app.use(authRoute.middleware());
 
 app.use(jwt({ secret: jwtSecret }));
 // Protected routes by JWT
 app.use(userRoute.middleware());
+app.use(pageRoute.middleware());
 
 const server = app.listen(port);
 

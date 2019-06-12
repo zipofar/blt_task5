@@ -30,12 +30,12 @@ router.route({
       title: Joi.string().min(1).max(100).required(),
       greeting: Joi.string().min(1).max(100).required(),
       content: Joi.string(),
-      user_id: Joi.number().required(),
     },
     type: 'json',
   },
   handler: async (ctx) => {
-    const newPage = await q.create(ctx.request.body);
+    const { userId } = ctx.state.user;
+    const newPage = await q.create({ ...ctx.request.body, user_id: userId });
     ctx.body = {
       data: newPage,
     };
