@@ -1,38 +1,28 @@
-const _ = require('lodash');
 const knex = require('../connection');
 
-const getAllUsers = () => (
-  knex.select('username').from('users')
+const getAll = () => (
+  knex.select().from('users')
 );
 
-const getUserById = id => (
-  knex('users').where('id', id).select('id', 'username', 'password')
-);
+const getByColumn = async (column, value) => {
+  const res = await knex('users').where(column, value).select().first();
+  return typeof res === 'undefined' ? false : res;
+};
 
-const getUserByUsername = username => (
-  knex('users').where('username', username).first()
-);
-
-const createUser = ({ username, password }) => (
-  knex('users').insert({ username, password })
-);
-
-const issetUser = async ({ id, username }) => {
-  if (!_.isUndefined(id)) {
-    const user = await getUserById(id);
-    return !_.isUndefined(user);
+const create = async ({ username, password }) => {
+  try {
+    const id = await knex('users').returning('id').insert({ username, password });
+    return id[0];
+  } catch (err) {
+    if (err.message.includes('unique')) {
+      return false;
+    }
+    throw err;
   }
-  if (!_.isUndefined(username)) {
-    const user = await getUserByUsername(username);
-    return !_.isUndefined(user);
-  }
-  throw new Error('Variables is undefined');
 };
 
 module.exports = {
-  getAllUsers,
-  getUserById,
-  getUserByUsername,
-  createUser,
-  issetUser,
+  getAll,
+  getByColumn,
+  create,
 };

@@ -1,39 +1,25 @@
 const Router = require('koa-joi-router');
-const q = require('../db/queries/users');
+const qUser = require('../db/queries/users');
+const params = require('../utils/paramsChecker');
 
 const router = Router();
 
 router.get('/users', async (ctx) => {
-  try {
-    const users = await q.getAllUsers();
-    ctx.body = {
-      status: 'success',
-      data: users,
-    };
-  } catch (err) {
-    console.log(err);
-    ctx.status = 400;
-    ctx.body = {
-      status: 'error',
-      message: err.message || 'Sorry, an error has occurred.',
-    };
-  }
+  const users = await qUser.getAll();
+  ctx.body = {
+    data: users.map(u => (params(u).permit(['username', 'id', 'role']))),
+  };
 });
 
 router.get('/users/:id', async (ctx) => {
-  try {
-    const user = await q.getUserById(ctx.params.id);
+  const user = await qUser.getByColumn('id', ctx.params.id);
+
+  if (user) {
     ctx.body = {
-      status: 'success',
-      data: user,
+      data: params(user).permit(['username', 'id', 'role']),
     };
-  } catch (err) {
-    console.log(err);
-    ctx.status = 400;
-    ctx.body = {
-      status: 'error',
-      message: err.message || 'Sorry, an error has occurred.',
-    };
+  } else {
+    ctx.throw(404, 'User not found');
   }
 });
 

@@ -1,35 +1,39 @@
-const Router = require('koa-router');
+const Router = require('koa-joi-router');
 const _ = require('lodash');
-const q = require('../db/queries/users');
+const qUser = require('../db/queries/users');
 const LoginAction = require('../actions/auth/LoginAction');
 
-const router = new Router();
+const { Joi } = Router;
+const router = Router();
 
-router.post('/auth/login', async (ctx) => {
-  const { username, password } = ctx.request.body;
-  try {
-    const user = await q.getUserByUsername(username);
-    const { error: loginError, ok: jwtToken } = LoginAction(user, password);
-    if (!_.isUndefined(loginError)) {
-      ctx.status = 404;
-      ctx.body = {
-        status: 'error',
-        message: 'Login or Password Incorrect',
-      };
-    } else {
-      ctx.body = {
-        status: 'success',
-        data: jwtToken,
-      };
+router.route({
+  method: 'post',
+  path: '/auth/login',
+  validate: {
+    body: {
+      username: Joi.string().min(3).required(),
+      password: Joi.string().min(3).required(),
+    },
+    type: 'json',
+  },
+  handler: async (ctx) => {
+    const { username, password } = ctx.request.body;
+    const user = await qUser.getByColumn('username', username);
+
+    if (!user) {
+      ctx.throw(404, 'Login or Password Incorrect');
     }
-  } catch (err) {
-    console.log(err);
-    ctx.status = 400;
+
+    const jwtToken = LoginAction(user, password);
+
+    if (!jwtToken) {
+      ctx.throw(404, 'Login or Password Incorrect');
+    }
+
     ctx.body = {
-      status: 'error',
-      message: err.message || 'Sorry, an error has occurred.',
+      data: jwtToken,
     };
-  }
+  },
 });
 
 module.exports = router;

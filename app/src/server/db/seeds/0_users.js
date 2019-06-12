@@ -20,7 +20,7 @@ exports.seed = (knex, Promise) => (
         knex('users').insert({
           username: 'admin',
           password: hash,
-          admin: true,
+          role: 'admin',
         }),
       );
     })

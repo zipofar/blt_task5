@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 
-const checkPasswordService = (realHash, verifiablePass) => (
-  bcrypt.compareSync(verifiablePass, realHash)
+const checkPasswordService = (hash, password) => (
+  bcrypt.compareSync(password, hash)
 );
 
 module.exports = checkPasswordService;

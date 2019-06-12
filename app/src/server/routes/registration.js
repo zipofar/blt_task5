@@ -1,5 +1,6 @@
 const Router = require('koa-joi-router');
-const q = require('../db/queries/users');
+const bcrypt = require('bcryptjs');
+const qUser = require('../db/queries/users');
 
 const { Joi } = Router;
 const router = Router();
@@ -13,45 +14,20 @@ router.route({
       password: Joi.string().min(3).max(10).required(),
     },
     type: 'json',
-    continueOnError: true,
+    continueOnError: false,
   },
   handler: async (ctx) => {
-    if (ctx.invalid) {
-      ctx.status = 400;
-      ctx.body = {
-        status: 'error',
-        data: ctx.invalid.body,
-      };
-      return;
-    }
+    const { username, password } = ctx.request.body;
+    const salt = bcrypt.genSaltSync();
+    const hash = bcrypt.hashSync(password, salt);
+    const userId = await qUser.create({ username, password: hash });
 
-    try {
-      const { body } = ctx.request;
-      const issetUser = await q.issetUser(body);
-
-      if (issetUser) {
-        ctx.status = 400;
-        ctx.body = {
-          status: 'error',
-          data: 'User exist',
-        };
-        return;
-      }
-
-      await q.createUser(body);
-      const newUser = await q.getUserByUsername(body.username);
-      const { id, username } = newUser;
+    if (userId) {
       ctx.body = {
-        status: 'success',
-        data: { id, username },
+        data: { userId, username },
       };
-    } catch (err) {
-      console.log(err);
-      ctx.status = 400;
-      ctx.body = {
-        status: 'error',
-        message: err.message || 'Sorry, an error has occurred.',
-      };
+    } else {
+      ctx.throw(422, 'User Exist');
     }
   },
 });

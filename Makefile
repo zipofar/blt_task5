@@ -8,6 +8,15 @@ ansible-development-setup:
 install:
 	docker-compose -f docker-compose_dev.yml run node make install
 
+migrate:
+	docker-compose -f docker-compose_dev.yml run node npx knex migrate:latest
+
+migrate-rollback:
+	docker-compose -f docker-compose_dev.yml run node npx knex migrate:rollback
+
+seed:
+	docker-compose -f docker-compose_dev.yml run node npx knex seed:run
+
 dev:
 	docker-compose -f docker-compose_dev.yml up -d
 
