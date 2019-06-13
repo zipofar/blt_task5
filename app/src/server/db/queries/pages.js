@@ -2,9 +2,10 @@ const knex = require('../connection');
 
 const fields = ['id', 'title', 'greeting', 'content', 'user_id'];
 
-const getAll = () => (
-  knex.select().from('pages')
-);
+const getAll = (opts) => {
+  const { limit = 10, offset = 0 } = opts;
+  return knex.select().from('pages').limit(limit).offset(offset);
+};
 
 const getById = async (id) => {
   const page = await knex('pages').where('id', id).select().first();

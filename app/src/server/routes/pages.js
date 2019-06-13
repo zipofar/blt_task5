@@ -5,7 +5,9 @@ const { Joi } = Router;
 const router = Router();
 
 router.get('/pages', async (ctx) => {
-  const pages = await q.getAll();
+  const { page } = ctx.request.query;
+  console.log(page)
+  const pages = await q.getAll(paginate());
   ctx.body = {
     data: pages,
   };
