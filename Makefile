@@ -5,7 +5,7 @@ ansible-development-setup:
 	echo 'pass' >> tmp/ansible-vault-password
 	ansible-playbook ansible/development.yml -i ansible/development -vv
 
-install:
+nstall:
 	docker-compose -f docker-compose_dev.yml run node make install
 
 migrate:
