@@ -1,13 +1,13 @@
 const Router = require('koa-joi-router');
 const q = require('../db/queries/pages');
+const paginate = require('../utils/paginator');
 
 const { Joi } = Router;
 const router = Router();
 
 router.get('/pages', async (ctx) => {
   const { page } = ctx.request.query;
-  console.log(page)
-  const pages = await q.getAll(paginate());
+  const pages = await q.getAll(paginate().page(page).perpage(2));
   ctx.body = {
     data: pages,
   };
