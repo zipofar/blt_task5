@@ -1,8 +1,9 @@
 const knex = require('../connection');
 
-const getAll = () => (
-  knex.select().from('users')
-);
+const getAll = (opts) => {
+  const { limit = 10, offset = 0 } = opts;
+  return knex.select().from('users').limit(limit).offset(offset);
+};
 
 const getByColumn = async (column, value) => {
   const res = await knex('users').where(column, value).select().first();

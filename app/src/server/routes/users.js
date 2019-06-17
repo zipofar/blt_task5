@@ -1,11 +1,13 @@
 const Router = require('koa-joi-router');
 const qUser = require('../db/queries/users');
+const paginate = require('../utils/paginator');
 const params = require('../utils/paramsChecker');
 
 const router = Router();
 
 router.get('/users', async (ctx) => {
-  const users = await qUser.getAll();
+  const { page } = ctx.request.query;
+  const users = await qUser.getAll(paginate().page(page).perpage(5));
   ctx.body = {
     data: users.map(u => (params(u).permit(['username', 'id', 'role']))),
   };
