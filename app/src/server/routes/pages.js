@@ -7,7 +7,7 @@ const router = Router();
 
 router.get('/pages', async (ctx) => {
   const { page } = ctx.request.query;
-  const pages = await q.getAll(paginate().page(page).perpage(2));
+  const pages = await q.getAll(paginate().page(page).perpage(5));
   ctx.body = {
     data: pages,
   };
