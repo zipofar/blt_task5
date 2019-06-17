@@ -1,3 +1,7 @@
 CREATE DATABASE {{ vault_db_name }};
 CREATE USER {{ vault_db_username }} WITH PASSWORD '{{ vault_db_password }}';
 GRANT ALL PRIVILEGES ON DATABASE {{ vault_db_name }} TO {{ vault_db_username }};
+
+CREATE DATABASE {{ vault_test_db_name }};
+CREATE USER {{ vault_test_db_username }} WITH PASSWORD '{{ vault_test_db_password }}';
+GRANT ALL PRIVILEGES ON DATABASE {{ vault_test_db_name }} TO {{ vault_test_db_username }};

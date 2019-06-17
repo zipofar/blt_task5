@@ -12,7 +12,7 @@
         src: templates/env_app.j2
         dest: '../.env_app'
 
-    - name: Make dir
+    - name: Make dirs for database
       file:
         path: "{{ item }}"
         state: directory

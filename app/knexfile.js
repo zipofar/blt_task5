@@ -19,6 +19,21 @@ const config = {
       directory: path.join(BASE_PATH, 'seeds'),
     },
   },
+  test: {
+    client: 'pg',
+    connection: {
+      host: 'postgres',
+      user: 'blt5_test',
+      password: 'blt5_test',
+      database: 'blt5_test',
+    },
+    migrations: {
+      directory: path.join(BASE_PATH, 'migrations'),
+    },
+    seeds: {
+      directory: path.join(BASE_PATH, 'seeds'),
+    },
+  },
 };
 
 module.exports = config;

@@ -1,7 +1,14 @@
 vault_db_hostname: "postgres"
+
 vault_db_name: "blt5"
 vault_db_username: "blt5"
 vault_db_password: "blt5"
+
+vault_test_db_name: "blt5_test"
+vault_test_db_username: "blt5_test"
+vault_test_db_password: "blt5_test"
+
 vault_db_root_password: "pass"
 vault_db_root_user: "super"
+
 vault_jwt_secret: "secret"
