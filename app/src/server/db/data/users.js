@@ -11,7 +11,7 @@ const admin = () => {
 };
 
 const build = (count) => {
-  const users = Array(count).fill(0).map((_, i) => {
+  const users = Array(count - 1).fill(0).map((_, i) => {
     const salt = bcrypt.genSaltSync();
     const hash = bcrypt.hashSync(`pass${i}`, salt);
     return {

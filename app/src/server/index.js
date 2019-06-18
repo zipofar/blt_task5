@@ -29,7 +29,7 @@ app.use(indexRoute.routes());
 app.use(registrationRoute.middleware());
 app.use(authRoute.middleware());
 
-app.use(jwt({ secret: jwtSecret }));
+app.use(jwt({ secret: jwtSecret, passthrough: true }));
 // Protected routes by JWT
 app.use(userRoute.middleware());
 app.use(pageRoute.middleware());
