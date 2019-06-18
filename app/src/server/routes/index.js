@@ -5,7 +5,7 @@ const router = new Router();
 router.get('/', async (ctx) => {
   ctx.body = {
     data: {
-      message: 'Hello from test project'
+      message: 'Hello from test project',
     },
   };
 });

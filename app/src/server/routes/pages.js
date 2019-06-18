@@ -24,7 +24,7 @@ router.get('/pages', async (ctx) => {
 
 router.get('/pages/user/:id', async (ctx) => {
   const { page } = ctx.request.query;
-  const pages = await q.getAllByUser(userId, paginate().page(page).perpage(5));
+  const pages = await q.getAllByUser(paginate().page(page).perpage(5));
   ctx.body = {
     data: pages,
   };
