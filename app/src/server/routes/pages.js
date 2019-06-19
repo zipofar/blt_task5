@@ -7,11 +7,6 @@ const { Joi } = Router;
 const router = Router();
 
 router.get('/pages', async (ctx) => {
-  const { user } = ctx.state;
-  if (typeof user === 'undefined') {
-    ctx.status = 401;
-    return;
-  }
   const { page } = ctx.request.query;
   const pages = await q.getAll(paginate().page(page).perpage(5));
   ctx.body = {
@@ -53,8 +48,12 @@ router.route({
     type: 'json',
   },
   handler: async (ctx) => {
-    const { userId = null } = ctx.state.user;
-    const newPage = await q.create({ ...ctx.request.body, user_id: userId });
+    const { user } = ctx.state;
+    if (typeof user === 'undefined') {
+      ctx.status = 401;
+      return;
+    }
+    const newPage = await q.create({ ...ctx.request.body, user_id: user.userId });
     ctx.body = {
       data: newPage,
     };

@@ -1,5 +1,4 @@
 const Router = require('koa-joi-router');
-const _ = require('lodash');
 const qUser = require('../db/queries/users');
 const LoginAction = require('../actions/auth/LoginAction');
 

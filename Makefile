@@ -24,7 +24,7 @@ dev:
 	docker-compose -f docker-compose_dev.yml up -d
 
 test:
-	docker-compose -f docker-compose_dev.yml run node npx mocha
+	docker-compose -f docker-compose_dev.yml run node npx mocha --timeout 5000
 
 kill:
 	docker-compose -f docker-compose_dev.yml kill
