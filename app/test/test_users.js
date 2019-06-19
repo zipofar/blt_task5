@@ -7,7 +7,7 @@ const knex = require('../src/server/db/connection');
 
 chai.use(chaiHttp);
 
-describe('API Pages', () => {
+describe('API Users', () => {
   const userCredentials = {
     username: 'user1',
     password: 'pass1',
@@ -33,9 +33,9 @@ describe('API Pages', () => {
     await knex.migrate.rollback();
   });
 
-  it('should return first 5 pages', async () => {
+  it('should return first 5 users', async () => {
     const res = await chai.request(server)
-      .get('/pages')
+      .get('/users')
       .send();
 
     res.should.have.status(200);
@@ -44,27 +44,24 @@ describe('API Pages', () => {
     res.body.data.should.be.a('array');
     res.body.data.length.should.equal(5);
     res.body.data[0].id.should.equal(1);
-    res.body.data[0].title.should.equal('Title 0');
-    res.body.data[0].greeting.should.equal('Greeting 0');
-    res.body.data[0].content.should.equal('Content 0');
-    res.body.data[0].user_id.should.equal(1);
+    res.body.data[0].username.should.equal('user0');
+    res.body.data[0].role.should.equal('user');
   });
 
-  it('should return second 5 pages', async () => {
+  it('should return second 5 users', async () => {
     const res = await chai.request(server)
-      .get('/pages?page=2')
+      .get('/users?page=2')
       .send();
 
     res.should.have.status(200);
     res.should.be.json;
     res.body.should.be.a('object');
     res.body.data.should.be.a('array');
-    res.body.data.length.should.equal(5);
-    res.body.data[0].should.have.property('id');
+    res.body.data.length.should.equal(2);
     res.body.data[0].id.should.equal(6);
   });
 
-  it('should return 404 when no more pages', async () => {
+  it('should return 404 when no more users', async () => {
     const res = await chai.request(server)
       .get('/pages?page=2000')
       .send();
@@ -73,9 +70,10 @@ describe('API Pages', () => {
     res.should.be.json;
   });
 
-  it('should return first 5 pages when offset page is letter', async () => {
+  it('should return first 5 users when number page is letter', async () => {
     const res = await chai.request(server)
-      .get('/pages?page=text')
+      .get('/users?page=text')
+      .set('Authorization', `Bearer ${session.jwt}`)
       .send();
 
     res.should.have.status(200);
@@ -85,39 +83,17 @@ describe('API Pages', () => {
     res.body.data.length.should.equal(5);
   });
 
-  it('should return page with id = 1', async () => {
+  it('should return user with id = 1', async () => {
     const res = await chai.request(server)
-      .get('/pages/1')
+      .get('/users/1')
+      .set('Authorization', `Bearer ${session.jwt}`)
       .send();
 
     res.should.have.status(200);
     res.should.be.json;
     res.body.data.should.be.a('object');
     res.body.data.id.should.equal(1);
-    res.body.data.title.should.equal('Title 0');
-    res.body.data.greeting.should.equal('Greeting 0');
-    res.body.data.content.should.equal('Content 0');
-    res.body.data.user_id.should.equal(1);
+    res.body.data.username.should.equal('user0');
+    res.body.data.role.should.equal('user');
   });
-
-  it('should create new page', async () => {
-    const res = await chai.request(server)
-      .post('/pages')
-      .set('Authorization', `Bearer ${session.jwt}`)
-      .type('json')
-      .send({
-        title: 'New Title',
-        greeting: 'New Greeting',
-        content: 'New Content',
-      });
-
-    res.should.have.status(200);
-    res.should.be.json;
-    res.body.data.should.be.a('object');
-    res.body.data.title.should.equal('New Title');
-    res.body.data.greeting.should.equal('New Greeting');
-    res.body.data.content.should.equal('New Content');
-    res.body.data.user_id.should.equal(2);
-  });
-
 });

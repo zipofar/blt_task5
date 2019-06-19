@@ -1,7 +1,7 @@
 const buildPages = require('../data/pages');
 const buildUsers = require('../data/users');
 
-const countUsers = 5;
+const countUsers = 7;
 const countPages = 20;
 
 exports.seed = knex => (
