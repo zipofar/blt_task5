@@ -36,6 +36,7 @@ describe('API Users', () => {
   it('should return first 5 users', async () => {
     const res = await chai.request(server)
       .get('/users')
+      .set('Authorization', `Bearer ${session.jwt}`)
       .send();
 
     res.should.have.status(200);
@@ -51,6 +52,7 @@ describe('API Users', () => {
   it('should return second 5 users', async () => {
     const res = await chai.request(server)
       .get('/users?page=2')
+      .set('Authorization', `Bearer ${session.jwt}`)
       .send();
 
     res.should.have.status(200);
@@ -64,6 +66,7 @@ describe('API Users', () => {
   it('should return 404 when no more users', async () => {
     const res = await chai.request(server)
       .get('/pages?page=2000')
+      .set('Authorization', `Bearer ${session.jwt}`)
       .send();
 
     res.should.have.status(404);

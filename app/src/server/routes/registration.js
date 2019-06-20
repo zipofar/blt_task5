@@ -20,11 +20,12 @@ router.route({
     const { username, password } = ctx.request.body;
     const salt = bcrypt.genSaltSync();
     const hash = bcrypt.hashSync(password, salt);
-    const userId = await qUser.create({ username, password: hash });
+    const newUser = await qUser.create({ username, password: hash });
 
-    if (userId) {
+    if (newUser) {
+      ctx.status = 201;
       ctx.body = {
-        data: { userId, username },
+        data: newUser,
       };
     } else {
       ctx.throw(422, 'User Exist');

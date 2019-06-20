@@ -8,7 +8,7 @@ const router = Router();
 const permitParams = ['username', 'id', 'role'];
 
 router.get('/users', async (ctx) => {
-  if (isAuth(ctx)) {
+  if (!isAuth(ctx)) {
     return;
   }
   const { page } = ctx.request.query;
@@ -19,7 +19,7 @@ router.get('/users', async (ctx) => {
 });
 
 router.get('/users/:id', async (ctx) => {
-  if (isAuth(ctx)) {
+  if (!isAuth(ctx)) {
     return;
   }
 
