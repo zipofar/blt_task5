@@ -2,11 +2,12 @@ const Router = require('koa-joi-router');
 const _ = require('lodash');
 const q = require('../db/queries/pages');
 const paginate = require('../utils/paginator');
+const { isAuth } = require('../services/auth');
 
 const { Joi } = Router;
 const router = Router();
 
-router.get('/pages', async (ctx) => {
+router.get('/api/v1/pages', async (ctx) => {
   const { page } = ctx.request.query;
   const pages = await q.getAll(paginate().page(page).perpage(5));
   ctx.body = {
@@ -17,7 +18,7 @@ router.get('/pages', async (ctx) => {
   }
 });
 
-router.get('/pages/user/:id', async (ctx) => {
+router.get('/api/v1/pages/user/:id', async (ctx) => {
   const { page } = ctx.request.query;
   const pages = await q.getAllByUser(paginate().page(page).perpage(5));
   ctx.body = {
@@ -25,7 +26,7 @@ router.get('/pages/user/:id', async (ctx) => {
   };
 });
 
-router.get('/pages/:id', async (ctx) => {
+router.get('/api/v1/pages/:id', async (ctx) => {
   const page = await q.getById(ctx.params.id);
   if (page) {
     ctx.body = {
@@ -38,7 +39,7 @@ router.get('/pages/:id', async (ctx) => {
 
 router.route({
   method: 'post',
-  path: '/pages',
+  path: '/api/v1/pages',
   validate: {
     body: {
       title: Joi.string().min(1).max(100).required(),
@@ -48,11 +49,10 @@ router.route({
     type: 'json',
   },
   handler: async (ctx) => {
-    const { user } = ctx.state;
-    if (typeof user === 'undefined') {
-      ctx.status = 401;
+    if (!isAuth(ctx)) {
       return;
     }
+    const { user } = ctx.state;
     const newPage = await q.create({ ...ctx.request.body, user_id: user.userId });
     ctx.body = {
       data: newPage,

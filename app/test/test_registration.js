@@ -20,7 +20,7 @@ describe('API Registration', () => {
 
   it('should return new user', async () => {
     const res = await chai.request(server)
-      .post('/registration')
+      .post('/api/v1/registration')
       .type('json')
       .send({ username: 'newUser', password: 'pass1' });
 
@@ -33,7 +33,7 @@ describe('API Registration', () => {
 
   it('should return user exist', async () => {
     const res = await chai.request(server)
-      .post('/registration')
+      .post('/api/v1/registration')
       .type('json')
       .send({ username: 'user1', password: 'pass1' });
 

@@ -19,7 +19,7 @@ describe('API Pages', () => {
     await knex.migrate.rollback();
     await knex.migrate.latest();
     await knex.seed.run();
-    const resLogin = await chai.request(server).post('/auth/login').type('json').send(userCredentials);
+    const resLogin = await chai.request(server).post('/api/v1/auth/login').type('json').send(userCredentials);
     session.jwt = resLogin.body.data;
   });
 
@@ -35,7 +35,7 @@ describe('API Pages', () => {
 
   it('should return first 5 pages', async () => {
     const res = await chai.request(server)
-      .get('/pages')
+      .get('/api/v1/pages')
       .send();
 
     res.should.have.status(200);
@@ -52,7 +52,7 @@ describe('API Pages', () => {
 
   it('should return second 5 pages', async () => {
     const res = await chai.request(server)
-      .get('/pages?page=2')
+      .get('/api/v1/pages?page=2')
       .send();
 
     res.should.have.status(200);
@@ -66,7 +66,7 @@ describe('API Pages', () => {
 
   it('should return 404 when no more pages', async () => {
     const res = await chai.request(server)
-      .get('/pages?page=2000')
+      .get('/api/v1/pages?page=2000')
       .send();
 
     res.should.have.status(404);
@@ -75,7 +75,7 @@ describe('API Pages', () => {
 
   it('should return first 5 pages when offset page is letter', async () => {
     const res = await chai.request(server)
-      .get('/pages?page=text')
+      .get('/api/v1/pages?page=text')
       .send();
 
     res.should.have.status(200);
@@ -87,7 +87,7 @@ describe('API Pages', () => {
 
   it('should return page with id = 1', async () => {
     const res = await chai.request(server)
-      .get('/pages/1')
+      .get('/api/v1/pages/1')
       .send();
 
     res.should.have.status(200);
@@ -102,7 +102,7 @@ describe('API Pages', () => {
 
   it('should create new page', async () => {
     const res = await chai.request(server)
-      .post('/pages')
+      .post('/api/v1/pages')
       .set('Authorization', `Bearer ${session.jwt}`)
       .type('json')
       .send({

@@ -12,7 +12,7 @@ describe('API Index', () => {
   it('should return index page', (done) => {
     chai
       .request(server)
-      .get('/')
+      .get('/api/v1')
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;

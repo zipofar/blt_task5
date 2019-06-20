@@ -1,6 +1,6 @@
 const knex = require('../connection');
 
-const fields = ['id', 'username', 'role'];
+const fields = ['id', 'username', 'role', 'password'];
 
 const getAll = (opts) => {
   const { limit = 10, offset = 0 } = opts;

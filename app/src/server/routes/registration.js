@@ -7,7 +7,7 @@ const router = Router();
 
 router.route({
   method: 'post',
-  path: '/registration',
+  path: '/api/v1/registration',
   validate: {
     body: {
       username: Joi.string().min(3).max(10).required(),

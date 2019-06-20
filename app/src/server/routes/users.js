@@ -2,12 +2,12 @@ const Router = require('koa-joi-router');
 const qUser = require('../db/queries/users');
 const paginate = require('../utils/paginator');
 const params = require('../utils/paramsChecker');
-const isAuth = require('../services/auth/isAuth');
+const { isAuth } = require('../services/auth');
 
 const router = Router();
 const permitParams = ['username', 'id', 'role'];
 
-router.get('/users', async (ctx) => {
+router.get('/api/v1/users', async (ctx) => {
   if (!isAuth(ctx)) {
     return;
   }
@@ -18,7 +18,7 @@ router.get('/users', async (ctx) => {
   };
 });
 
-router.get('/users/:id', async (ctx) => {
+router.get('/api/v1/users/:id', async (ctx) => {
   if (!isAuth(ctx)) {
     return;
   }

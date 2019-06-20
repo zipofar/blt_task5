@@ -20,7 +20,7 @@ describe('API Login', () => {
 
   it('should return jwt token', async () => {
     const res = await chai.request(server)
-      .post('/auth/login')
+      .post('/api/v1/auth/login')
       .type('json')
       .send({
         username: 'user1',
@@ -34,7 +34,7 @@ describe('API Login', () => {
 
   it('should return error, if username not exist', async () => {
     const res = await chai.request(server)
-      .post('/auth/login')
+      .post('/api/v1/auth/login')
       .type('json')
       .send({
         username: 'unknown',
@@ -49,7 +49,7 @@ describe('API Login', () => {
 
   it('should return error, if password incorrect', async () => {
     const res = await chai.request(server)
-      .post('/auth/login')
+      .post('/api/v1/auth/login')
       .type('json')
       .send({
         username: 'user1',

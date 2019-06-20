@@ -19,7 +19,7 @@ describe('API Users', () => {
     await knex.migrate.rollback();
     await knex.migrate.latest();
     await knex.seed.run();
-    const resLogin = await chai.request(server).post('/auth/login').type('json').send(userCredentials);
+    const resLogin = await chai.request(server).post('/api/v1/auth/login').type('json').send(userCredentials);
     session.jwt = resLogin.body.data;
   });
 
@@ -35,7 +35,7 @@ describe('API Users', () => {
 
   it('should return first 5 users', async () => {
     const res = await chai.request(server)
-      .get('/users')
+      .get('/api/v1/users')
       .set('Authorization', `Bearer ${session.jwt}`)
       .send();
 
@@ -47,11 +47,12 @@ describe('API Users', () => {
     res.body.data[0].id.should.equal(1);
     res.body.data[0].username.should.equal('user0');
     res.body.data[0].role.should.equal('user');
+    res.body.data[0].should.not.have.property('password')
   });
 
   it('should return second 5 users', async () => {
     const res = await chai.request(server)
-      .get('/users?page=2')
+      .get('/api/v1/users?page=2')
       .set('Authorization', `Bearer ${session.jwt}`)
       .send();
 
@@ -65,7 +66,7 @@ describe('API Users', () => {
 
   it('should return 404 when no more users', async () => {
     const res = await chai.request(server)
-      .get('/pages?page=2000')
+      .get('/api/v1/pages?page=2000')
       .set('Authorization', `Bearer ${session.jwt}`)
       .send();
 
@@ -75,7 +76,7 @@ describe('API Users', () => {
 
   it('should return first 5 users when number page is letter', async () => {
     const res = await chai.request(server)
-      .get('/users?page=text')
+      .get('/api/v1/users?page=text')
       .set('Authorization', `Bearer ${session.jwt}`)
       .send();
 
@@ -88,7 +89,7 @@ describe('API Users', () => {
 
   it('should return user with id = 1', async () => {
     const res = await chai.request(server)
-      .get('/users/1')
+      .get('/api/v1/users/1')
       .set('Authorization', `Bearer ${session.jwt}`)
       .send();
 
@@ -98,5 +99,6 @@ describe('API Users', () => {
     res.body.data.id.should.equal(1);
     res.body.data.username.should.equal('user0');
     res.body.data.role.should.equal('user');
+    res.body.data.should.not.have.property('password')
   });
 });

@@ -7,7 +7,7 @@ const router = Router();
 
 router.route({
   method: 'post',
-  path: '/auth/login',
+  path: '/api/v1/auth/login',
   validate: {
     body: {
       username: Joi.string().min(3).required(),
