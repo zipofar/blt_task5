@@ -2,7 +2,17 @@ version: '2.2'
 
 services:
 
-  node:
+  app_client:
+    build: ./images/node
+    command: npm run serve
+    env_file:
+      - ./.env_app
+    volumes:
+      - ./app:/var/www/html
+    ports:
+      - "${CLIENT_PORT}:${CLIENT_PORT}"
+
+  app_server:
     build: ./images/node
     command: npm start
     env_file:
@@ -10,7 +20,7 @@ services:
     volumes:
       - ./app:/var/www/html
     ports:
-      - "${WEBSERVER_PORT}:${APP_PORT}"
+      - "${SERVER_PORT}:${SERVER_PORT}"
     links:
       - postgres
 

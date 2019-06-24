@@ -2,5 +2,6 @@
 .idea/
 *.cache
 .env
+.env_app
 /tmp/
 /postgres/
