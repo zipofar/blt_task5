@@ -7,7 +7,7 @@ const pageRoute = require('./routes/pages');
 const registrationRoute = require('./routes/registration');
 const authRoute = require('./routes/auth');
 
-const port = process.env.APP_PORT || 4000;
+const port = process.env.SERVER_PORT || 4000;
 const jwtSecret = process.env.JWT_SECRET;
 
 const app = new Koa();

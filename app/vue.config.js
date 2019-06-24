@@ -1,5 +1,5 @@
 module.exports = {
-  entry: {
-    //   server: './src/server/index',
+  devServer: {
+    port: 3000,
   },
 };
