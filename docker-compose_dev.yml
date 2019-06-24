@@ -10,8 +10,7 @@ services:
     volumes:
       - ./app:/var/www/html
     ports:
-      #- "${CLIENT_PORT}:${CLIENT_PORT}"
-      - "3000:3000"
+      - "${CLIENT_PORT}:${CLIENT_PORT}"
 
   app_server:
     build: ./images/node
@@ -21,8 +20,7 @@ services:
     volumes:
       - ./app:/var/www/html
     ports:
-      #- "${SERVER_PORT}:${SERVER_PORT}"
-      - "4000:4000"
+      - "${SERVER_PORT}:${SERVER_PORT}"
     links:
       - postgres
 
