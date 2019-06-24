@@ -42,7 +42,8 @@
     "eslint-plugin-jest": "^22.7.0",
     "eslint-plugin-vue": "^5.0.0",
     "mocha": "^6.1.4",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "webpack-dev-middleware": "^3.7.0"
   },
   "eslintConfig": {
     "root": true,

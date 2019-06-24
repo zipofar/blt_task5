@@ -31,6 +31,9 @@ kill:
 
 reload: kill dev
 
+node-bash:
+	docker-compose -f docker-compose_dev.yml exec node bash
+
 ansible-vaults-encrypt:
 	ansible-vault encrypt ansible/production/group_vars/all/vault.yml
 

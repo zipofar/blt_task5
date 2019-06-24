@@ -1,4 +1,4 @@
-webserver_port: 4000
-app_port: 4000
+server_port: 4000
+client_port: 3000
 app_debug: true
 db_type: psql
