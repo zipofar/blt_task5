@@ -1,17 +1,19 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <Test />
+    <Menu />
+    <MainPage />
   </div>
 </template>
 
 <script>
-import Test from './components/Test.vue'
+import MainPage from './components/MainPage.vue'
+import Menu from './components/Menu.vue'
 
 export default {
   name: 'app',
   components: {
-    Test,
+    Menu,
+    MainPage,
   }
 }
 </script>

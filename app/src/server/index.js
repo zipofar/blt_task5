@@ -9,8 +9,13 @@ const authRoute = require('./routes/auth');
 
 const port = process.env.SERVER_PORT || 4000;
 const jwtSecret = process.env.JWT_SECRET;
+const app_env = process.env.APP_ENV;
 
 const app = new Koa();
+if (app_env === 'development') {
+  const cors = require('@koa/cors');
+  app.use(cors());
+}
 app.use(async (ctx, next) => {
   try {
     await next();

@@ -12,6 +12,7 @@
   "author": "Zipofar",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.0",
     "bcryptjs": "^2.4.3",
     "core-js": "^2.6.5",
     "jsonwebtoken": "^8.5.1",
@@ -25,9 +26,11 @@
     "lodash": "^4.17.11",
     "path": "^0.12.7",
     "pg": "^7.11.0",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "vuejs-paginate": "^2.1.0"
   },
   "devDependencies": {
+    "@koa/cors": "^2.2.3",
     "@vue/cli": "^3.8.4",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",
