@@ -10,8 +10,14 @@ const router = Router();
 router.get('/api/v1/pages', async (ctx) => {
   const { page } = ctx.request.query;
   const pages = await q.getAll(paginate().page(page).perpage(5));
+  const countPages = await q.countPages();
   ctx.body = {
-    data: pages,
+    data: {
+      payload: pages,
+      agregate: {
+        countPages,
+      }
+    },
   };
   if (_.isEmpty(pages)) {
     ctx.status = 404;

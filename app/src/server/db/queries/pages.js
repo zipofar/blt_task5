@@ -12,6 +12,11 @@ const getAll = (opts) => {
     .offset(offset);
 };
 
+const countPages = async () => {
+  const { count } = await knex('pages').count('id').first();
+  return count;
+}
+
 const getAllByUser = (userId, opts) => {
   const { limit = 10, offset = 0 } = opts;
   return knex
@@ -37,4 +42,5 @@ module.exports = {
   getById,
   create,
   getAllByUser,
+  countPages,
 };

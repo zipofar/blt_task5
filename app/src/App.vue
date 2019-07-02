@@ -1,19 +1,19 @@
 <template>
   <div id="app">
     <Menu />
-    <MainPage />
+    <ListPages />
   </div>
 </template>
 
 <script>
-import MainPage from './components/MainPage.vue'
+import ListPages from './components/ListPages.vue'
 import Menu from './components/Menu.vue'
 
 export default {
   name: 'app',
   components: {
     Menu,
-    MainPage,
+    ListPages,
   }
 }
 </script>

@@ -6,7 +6,7 @@ const primaryPage = {
   title: 'Primary page',
   greeting: 'Greeting from primary',
   content: '<h1>Hello</h1>',
-  isPrimary: true,
+  isprimary: 'true',
   user_id: 1,
 };
 
@@ -16,6 +16,7 @@ const build = (countUsers, countPages) => {
       title: `Title ${i}`,
       greeting: `Greeting ${i}`,
       content: `Content ${i}`,
+      isprimary: 'false',
       user_id: calcUserId(i + 1, countUsers),
     }
   ));
