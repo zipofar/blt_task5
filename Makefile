@@ -32,7 +32,7 @@ kill:
 reload: kill dev
 
 app-bash:
-	docker-compose -f docker-compose_dev.yml exec app_server bash
+	docker-compose -f docker-compose_dev.yml exec -it app_server bash
 
 ansible-vaults-encrypt:
 	ansible-vault encrypt ansible/production/group_vars/all/vault.yml

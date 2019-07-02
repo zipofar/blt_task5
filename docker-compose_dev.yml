@@ -6,7 +6,7 @@ services:
     build: ./images/node
     command: npm run serve
     env_file:
-      - ./.env_app
+      - ./.env.app
     volumes:
       - ./app:/var/www/html
     ports:
@@ -16,7 +16,7 @@ services:
     build: ./images/node
     command: npm start
     env_file:
-      - ./.env_app
+      - ./.env.app
     volumes:
       - ./app:/var/www/html
     ports:

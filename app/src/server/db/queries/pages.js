@@ -4,12 +4,22 @@ const fields = ['id', 'title', 'greeting', 'content', 'user_id'];
 
 const getAll = (opts) => {
   const { limit = 10, offset = 0 } = opts;
-  return knex.select().from('pages').limit(limit).offset(offset);
+  return knex
+    .column('id', 'title', 'user_id')
+    .select()
+    .from('pages')
+    .limit(limit)
+    .offset(offset);
 };
 
 const getAllByUser = (userId, opts) => {
   const { limit = 10, offset = 0 } = opts;
-  return knex.select().where('user_id', userId).from('pages').limit(limit).offset(offset);
+  return knex
+    .select()
+    .where('user_id', userId)
+    .from('pages')
+    .limit(limit)
+    .offset(offset);
 };
 
 const getById = async (id) => {
@@ -26,4 +36,5 @@ module.exports = {
   getAll,
   getById,
   create,
+  getAllByUser,
 };

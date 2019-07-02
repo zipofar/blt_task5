@@ -1,6 +1,6 @@
 <template>
   <div class="main-page">
-    <div v-for="page in pages">{{ page.title }} - {{ page.greeting }}</div>
+    <div v-for="page in pages"><a href="">{{ page.title }}</a></div>
     <paginate
       :page-count="20"
       :click-handler="pageHandler"
@@ -14,6 +14,8 @@
 <script>
 import axios from 'axios';
 
+const baseUrl = process.env.VUE_APP_APIURL;
+
 export default {
   name: 'MainPage',
   data: function () {
@@ -24,12 +26,14 @@ export default {
   },
   methods: {
     fetchPages: function (page) {
-      axios
-        .get('http://localhost:4000/api/v1/pages', {
-          params: { page },
-        })
-        .then((res) => { this.pages = res.data.data })
-        .catch((err) => { console.log(err) })
+      axios({
+        method: 'get',
+        baseURL: baseUrl,
+        url: '/v1/pages',
+        params: { page },
+     })
+      .then((res) => { this.pages = res.data.data })
+      .catch((err) => { console.log(err) })
     },
     pageHandler: function (page) {
       this.currentPage=page;

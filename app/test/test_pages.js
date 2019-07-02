@@ -45,8 +45,6 @@ describe('API Pages', () => {
     res.body.data.length.should.equal(5);
     res.body.data[0].id.should.equal(1);
     res.body.data[0].title.should.equal('Title 0');
-    res.body.data[0].greeting.should.equal('Greeting 0');
-    res.body.data[0].content.should.equal('Content 0');
     res.body.data[0].user_id.should.equal(1);
   });
 

@@ -12,6 +12,7 @@ exports.up = function (knex, Promise) {
       table.string('title').notNullable();
       table.string('greeting').notNullable();
       table.string('content');
+      table.bool('isPrimary').notNullable().defaultTo(false);
       table.integer('user_id')
         .notNullable()
         .references('id')
