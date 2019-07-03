@@ -12,10 +12,15 @@ const getAll = (opts) => {
     .offset(offset);
 };
 
-const countPages = async () => {
+const countRecords = async () => {
   const { count } = await knex('pages').count('id').first();
   return count;
-}
+};
+
+const getPrimaryPage = async () => {
+  const page = await knex('pages').where('isprimary', 'true').select().first();
+  return typeof page === 'undefined' ? false : page;
+};
 
 const getAllByUser = (userId, opts) => {
   const { limit = 10, offset = 0 } = opts;
@@ -42,5 +47,6 @@ module.exports = {
   getById,
   create,
   getAllByUser,
-  countPages,
+  getPrimaryPage,
+  countRecords,
 };

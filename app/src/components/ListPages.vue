@@ -2,7 +2,7 @@
   <div class="list-pages">
     <div v-for="page in pages"><a v-bind:href=page.url>{{ page.title }}</a></div>
     <paginate
-      :page-count="20"
+      :page-count=countPagination
       :click-handler="paginationHandler"
       :prev-text="'Prev'"
       :next-text="'Next'"
@@ -18,10 +18,11 @@ import axios from 'axios';
 const apiBaseUrl = process.env.VUE_APP_APIURL;
 
 export default {
-  name: 'MainPage',
+  name: 'ListPages',
   data: function () {
     return {
       currentPaginationNumber: 1,
+      countPagination: 0,
       pages: [],
     }
   },
@@ -34,9 +35,10 @@ export default {
         params: { page },
      })
       .then((res) => {
-        this.pages = res.data.data.map(e => (
+        this.pages = res.data.data.payload.map(e => (
           { ...e, url: `/pages/${e.id}` }
         ))
+        this.countPagination = parseInt(res.data.data.agregate.countPagination);
       })
       .catch((err) => { console.log(err) })
     },

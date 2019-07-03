@@ -27,6 +27,7 @@
     "path": "^0.12.7",
     "pg": "^7.11.0",
     "vue": "^2.6.10",
+    "vue-router": "^3.0.6",
     "vuejs-paginate": "^2.1.0"
   },
   "devDependencies": {

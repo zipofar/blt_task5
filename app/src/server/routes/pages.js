@@ -6,17 +6,19 @@ const { isAuth } = require('../services/auth');
 
 const { Joi } = Router;
 const router = Router();
+const perPage = 5;
 
 router.get('/api/v1/pages', async (ctx) => {
   const { page } = ctx.request.query;
-  const pages = await q.getAll(paginate().page(page).perpage(5));
-  const countPages = await q.countPages();
+  const pages = await q.getAll(paginate().page(page).perpage(perPage));
+  const countRecords = await q.countRecords();
+  const countPagination = Math.ceil(countRecords / perPage);
   ctx.body = {
     data: {
       payload: pages,
       agregate: {
-        countPages,
-      }
+        countPagination,
+      },
     },
   };
   if (_.isEmpty(pages)) {
@@ -24,12 +26,15 @@ router.get('/api/v1/pages', async (ctx) => {
   }
 });
 
-router.get('/api/v1/pages/user/:id', async (ctx) => {
-  const { page } = ctx.request.query;
-  const pages = await q.getAllByUser(paginate().page(page).perpage(5));
-  ctx.body = {
-    data: pages,
-  };
+router.get('/api/v1/pages/primary', async (ctx) => {
+  const page = await q.getPrimaryPage();
+  if (page) {
+    ctx.body = {
+      data: page,
+    };
+  } else {
+    ctx.throw(404, 'Page not found');
+  }
 });
 
 router.get('/api/v1/pages/:id', async (ctx) => {
