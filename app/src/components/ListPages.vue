@@ -36,7 +36,7 @@ export default {
      })
       .then((res) => {
         this.pages = res.data.data.payload.map(e => (
-          { ...e, url: `/pages/${e.id}` }
+          { ...e, url: `#/pages/${e.id}` }
         ))
         this.countPagination = parseInt(res.data.data.agregate.countPagination);
       })

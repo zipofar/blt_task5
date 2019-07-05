@@ -2,8 +2,6 @@
   <div id="app">
     <Menu />
     <ListPages />
-    <router-link to="/pages/1">Page 1</router-link>
-    <router-link to="/pages/2">Page 2</router-link>
     <router-view></router-view>
   </div>
 </template>
