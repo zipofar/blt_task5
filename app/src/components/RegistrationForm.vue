@@ -3,6 +3,7 @@
     <input v-model="login" placeholder="Login">
     <input type="password" v-model="password" placeholder="Password">
     <button v-on:click="makeReg">Register</button>
+    <p v-if="errorMsg">{{ errorMsg }}</p>
   </div>
 </template>
 
@@ -19,10 +20,12 @@ export default {
       password: '',
       user: {},
       token: '',
+      errorMsg: '',
     };
   },
   methods: {
     makeReg: function () {
+      this.errorMsg = '';
       axios({
         method: 'post',
         baseURL: apiBaseUrl,
@@ -36,7 +39,9 @@ export default {
         this.user = res.data.data.user;
         this.token = res.data.data.token;
       })
-      .catch((err) => { console.log(err) })
+      .catch((err) => {
+        this.errorMsg = err.response.data.message;
+      })
     },
   },
 }
