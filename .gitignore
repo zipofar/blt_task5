@@ -5,3 +5,4 @@
 .env.app
 /tmp/
 /postgres/
+/node_modules

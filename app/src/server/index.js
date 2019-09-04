@@ -9,10 +9,10 @@ const authRoute = require('./routes/auth');
 
 const port = process.env.SERVER_PORT || 4000;
 const jwtSecret = process.env.JWT_SECRET;
-const app_env = process.env.APP_ENV;
+const appEnv = process.env.APP_ENV;
 
 const app = new Koa();
-if (app_env === 'development') {
+if (appEnv === 'development') {
   const cors = require('@koa/cors');
   app.use(cors());
 }
