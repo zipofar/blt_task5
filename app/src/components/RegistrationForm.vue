@@ -1,8 +1,8 @@
 <template>
-  <div class="login">
+  <div class="login" v-if="userIsAuth">
     <input v-model="login" placeholder="Login">
     <input type="password" v-model="password" placeholder="Password">
-    <button v-on:click="makeReg">Register</button>
+    <button v-on:click="makeRegister">Register</button>
     <p v-if="errorMsg">{{ errorMsg }}</p>
   </div>
 </template>
@@ -18,13 +18,12 @@ export default {
     return {
       login: '',
       password: '',
-      user: {},
-      token: '',
       errorMsg: '',
+      userIsAuth: this.$store.state.userIsAuth,
     };
   },
   methods: {
-    makeReg: function () {
+    makeRegister: function () {
       this.errorMsg = '';
       axios({
         method: 'post',
@@ -36,8 +35,8 @@ export default {
         },
       })
       .then((res) => {
-        this.user = res.data.data.user;
-        this.token = res.data.data.token;
+        this.$store.commit('setUserAuth');
+        this.$store.commit('setUserInfo', res.data.data.user);
       })
       .catch((err) => {
         this.errorMsg = err.response.data.message;

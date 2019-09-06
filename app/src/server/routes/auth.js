@@ -31,9 +31,10 @@ router.route({
       ctx.throw(404, 'Login or Password Incorrect');
     }
 
+    ctx.cookies.set('jwtToken', jwtToken);
+
     ctx.body = {
       data: {
-        token: jwtToken,
         user: params(user).permit(permitParams),
       },
     };

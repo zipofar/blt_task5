@@ -2,8 +2,9 @@
   <div class="menu">
     <ul>
       <li><a href="#/">Home</a></li>
-      <li><a href="#/login">Login</a></li>
-      <li><a href="#/registration">Registration</a></li>
+      <li v-if="isGuest"><a href="#/login">Login</a></li>
+      <li v-if="isGuest"><a href="#/registration">Registration</a></li>
+      <li v-if="!isGuest">Hello, {{ userName }}</li>
     </ul>
   </div>
 </template>
@@ -15,6 +16,8 @@ export default {
     return {
       currentPage: 1,
       pages: [],
+      userName: this.$store.state.user.username,
+      isGuest: !this.$store.state.userIsAuth,
     }
   },
   methods: {

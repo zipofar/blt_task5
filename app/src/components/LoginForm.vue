@@ -5,6 +5,7 @@
     <button v-on:click="makeAuth">Login</button>
     <p v-if="errMessage !== ''"><i>{{ errMessage }}</i></p>
     <p v-if="fetchState === 'request'"><i>Loading...</i></p>
+    <p v-if="fetchState === 'success'"><i>Hello, {{ user.username }}</i></p>
   </div>
 </template>
 
@@ -20,8 +21,6 @@ export default {
     return {
       login: '',
       password: '',
-      user: {},
-      token: '',
       errMessage: '',
       fetchState: '',
     };
@@ -42,8 +41,9 @@ export default {
       .then((res) => {
         this.fetchState = 'success';
         this.user = res.data.data.user;
-        this.token = res.data.data.token;
         this.errMessage = '';
+        this.$store.commit('setUserAuth');
+        this.$store.commit('setUserInfo', res.data.data.user);
       })
       .catch((err) => {
         this.fetchState = 'failure';
