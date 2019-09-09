@@ -1,6 +1,7 @@
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const jwt = require('koa-jwt');
+const session = require('koa-session');
 const indexRoute = require('./routes/index');
 const userRoute = require('./routes/users');
 const pageRoute = require('./routes/pages');
@@ -11,7 +12,12 @@ const port = process.env.SERVER_PORT || 4000;
 const jwtSecret = process.env.JWT_SECRET;
 const appEnv = process.env.APP_ENV;
 
+
 const app = new Koa();
+
+app.keys = ['key'];
+app.use(session(app));
+
 if (appEnv === 'development') {
   const cors = require('@koa/cors');
   app.use(cors());
@@ -19,6 +25,8 @@ if (appEnv === 'development') {
 app.use(async (ctx, next) => {
   try {
     await next();
+    // TODO: make uid
+    ctx.session.uid = 'jopa';
   } catch (err) {
     ctx.status = err.status || 500;
     ctx.body = {

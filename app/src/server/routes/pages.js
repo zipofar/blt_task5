@@ -13,16 +13,17 @@ router.get('/api/v1/pages', async (ctx) => {
   const pages = await q.getAll(paginate().page(page).perpage(perPage));
   const countRecords = await q.countRecords();
   const countPagination = Math.ceil(countRecords / perPage);
-  ctx.body = {
-    data: {
-      payload: pages,
-      agregate: {
-        countPagination,
-      },
-    },
-  };
   if (_.isEmpty(pages)) {
     ctx.status = 404;
+  } else {
+    ctx.body = {
+      data: {
+        payload: pages,
+        agregate: {
+          countPagination,
+        },
+      },
+    };
   }
 });
 
