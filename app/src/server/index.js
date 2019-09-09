@@ -7,6 +7,7 @@ const userRoute = require('./routes/users');
 const pageRoute = require('./routes/pages');
 const registrationRoute = require('./routes/registration');
 const authRoute = require('./routes/auth');
+const csrfRoute = require('./routes/csrf');
 
 const port = process.env.SERVER_PORT || 4000;
 const jwtSecret = process.env.JWT_SECRET;
@@ -39,6 +40,7 @@ app.use(async (ctx, next) => {
 app.use(bodyParser());
 // Public routes
 app.use(indexRoute.routes());
+app.use(csrfRoute.middleware());
 app.use(registrationRoute.middleware());
 app.use(authRoute.middleware());
 
