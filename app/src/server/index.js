@@ -8,11 +8,11 @@ const pageRoute = require('./routes/pages');
 const registrationRoute = require('./routes/registration');
 const authRoute = require('./routes/auth');
 const csrfRoute = require('./routes/csrf');
+const appStateRoute = require('./routes/appState');
 
 const port = process.env.SERVER_PORT || 4000;
 const jwtSecret = process.env.JWT_SECRET;
 const appEnv = process.env.APP_ENV;
-
 
 const app = new Koa();
 
@@ -23,11 +23,10 @@ if (appEnv === 'development') {
   const cors = require('@koa/cors');
   app.use(cors());
 }
+
 app.use(async (ctx, next) => {
   try {
     await next();
-    // TODO: make uid
-    ctx.session.uid = 'jopa';
   } catch (err) {
     ctx.status = err.status || 500;
     ctx.body = {
@@ -41,6 +40,7 @@ app.use(bodyParser());
 // Public routes
 app.use(indexRoute.routes());
 app.use(csrfRoute.middleware());
+app.use(appStateRoute.middleware());
 app.use(registrationRoute.middleware());
 app.use(authRoute.middleware());
 

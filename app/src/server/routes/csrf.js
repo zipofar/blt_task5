@@ -6,9 +6,7 @@ const router = Router();
 router.get('/api/v1/service/csrf', async (ctx) => {
   const csrf = uuid();
   ctx.body = {
-    data: {
-      csrf,
-    },
+    csrf,
   };
   ctx.session.csrf = csrf;
 });

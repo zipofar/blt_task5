@@ -11,16 +11,13 @@ Vue.use(Vuex);
 Vue.use(VueRouter);
 
 const store = new Vuex.Store({
-  state: {
-    user: {},
-    userIsAuth: false,
-  },
+  state: { user: {} },
   mutations: {
-    setUserAuth(state) {
-      state.userIsAuth = true;
+    updateState(state, payload) {
+      Object.assign(state, payload);
     },
-    setUserInfo(state, userInfo) {
-      state.user = { ...userInfo };
+    updateUser(state, payload) {
+      state.user = { ...payload };
     },
   },
 });

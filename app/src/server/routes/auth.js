@@ -2,6 +2,7 @@ const Router = require('koa-joi-router');
 const qUser = require('../db/queries/users');
 const params = require('../utils/paramsChecker');
 const LoginAction = require('../actions/auth/LoginAction');
+const initState = require('../initAppState');
 
 const { Joi } = Router;
 const router = Router();
@@ -31,13 +32,26 @@ router.route({
       ctx.throw(404, 'Login or Password Incorrect');
     }
 
-    ctx.cookies.set('jwtToken', jwtToken);
+    const userInfo = params(user).permit(permitParams);
+    const updatedUserInfo = { ...userInfo, userIsAuth: true };
 
-    ctx.body = {
-      data: {
-        user: params(user).permit(permitParams),
-      },
-    };
+    ctx.body = updatedUserInfo;
+    ctx.session.state.user = updatedUserInfo;
+
+    ctx.cookies.set('jwtToken', jwtToken);
+  },
+});
+
+router.route({
+  method: 'post',
+  path: '/api/v1/auth/logout',
+  handler: async (ctx) => {
+    if (ctx.session.state.user.userIsAuth) {
+      ctx.session.state = initState;
+      ctx.body = initState;
+    } else {
+      ctx.throw(404, 'Your are not user');
+    }
   },
 });
 

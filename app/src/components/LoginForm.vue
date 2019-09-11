@@ -4,8 +4,8 @@
     <input type="password" v-model="password" placeholder="Password">
     <button v-on:click="makeAuth">Login</button>
     <p v-if="errMessage !== ''"><i>{{ errMessage }}</i></p>
-    <p v-if="fetchState === 'request'"><i>Loading...</i></p>
-    <p v-if="fetchState === 'success'"><i>Hello, {{ user.username }}</i></p>
+    <p v-if="fetchStateUser === 'request'"><i>Loading...</i></p>
+    <p v-if="fetchStateUser === 'success'"><i>Hello, {{ username }}</i></p>
   </div>
 </template>
 
@@ -21,13 +21,15 @@ export default {
     return {
       login: '',
       password: '',
+      csrf: '',
       errMessage: '',
-      fetchState: '',
+      fetchStateUser: '',
+      fetchStateCsrf: '',
     };
   },
   methods: {
     makeAuth: function () {
-      this.fetchState = 'request';
+      this.fetchStateUser = 'request';
       this.errMessage = '';
       axios({
         method: 'post',
@@ -38,18 +40,39 @@ export default {
           password: this.password,
         },
       })
-      .then((res) => {
-        this.fetchState = 'success';
-        this.user = res.data.data.user;
+      .then(({ data }) => {
+        this.fetchStateUser = 'success';
         this.errMessage = '';
-        this.$store.commit('setUserAuth');
-        this.$store.commit('setUserInfo', res.data.data.user);
+        this.$store.commit('updateUser', data);
       })
       .catch((err) => {
-        this.fetchState = 'failure';
+        this.fetchStateUser = 'failure';
         this.errMessage = errorHandler(err);
       })
     },
+  },
+  computed: {
+    username: function () {
+      return this.$store.state.user.username;
+    }
+  },
+  beforeMount: function () {
+    this.fetchStateCsrf = 'request';
+    this.errMessage = '';
+    axios({
+      method: 'get',
+      baseURL: apiBaseUrl,
+      url: '/v1/service/csrf',
+    })
+    .then(({ data }) => {
+      this.fetchStateCsrf = 'success';
+      this.csrf = data.csrf;
+      this.errMessage = '';
+    })
+    .catch((err) => {
+      this.fetchStateCsrf = 'failure';
+      this.errMessage = errorHandler(err);
+    });
   },
 }
 </script>
