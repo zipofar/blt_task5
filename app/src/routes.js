@@ -1,8 +1,12 @@
+import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Page from './components/Page.vue';
 import Page404 from './components/404.vue';
 import LoginForm from './components/LoginForm.vue';
 import RegistrationForm from './components/RegistrationForm.vue';
+import store from './store';
+
+Vue.use(VueRouter);
 
 const router = new VueRouter({
   routes: [
@@ -36,9 +40,20 @@ const router = new VueRouter({
     },
   ],
 });
-/*
+
 router.beforeEach((to, from, next) => {
+  if (to.matched.some(rec => rec.meta.guest)) {
+    const { userIsAuth } = store.state.user;
+    if (userIsAuth) {
+      next({
+        name: 'root',
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
-*/
 
 export default router;
