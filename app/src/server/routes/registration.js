@@ -1,7 +1,6 @@
 const Router = require('koa-joi-router');
 const bcrypt = require('bcryptjs');
 const params = require('../utils/paramsChecker');
-const LoginAction = require('../actions/auth/LoginAction');
 const qUser = require('../db/queries/users');
 
 const { Joi } = Router;
@@ -26,17 +25,12 @@ router.route({
     const newUser = await qUser.create({ username, password: hash });
 
     if (newUser) {
-      const jwtToken = LoginAction(newUser, password);
-      if (!jwtToken) {
-        ctx.throw(404, 'Login or Password Incorrect');
-      }
       ctx.status = 201;
-      ctx.body = {
-        data: {
-          token: jwtToken,
-          user: params(newUser).permit(permitParams),
-        },
-      };
+      const userInfo = params(newUser).permit(permitParams);
+      const updatedUserInfo = { ...userInfo, userIsAuth: true };
+
+      ctx.body = updatedUserInfo;
+      ctx.session.state.user = updatedUserInfo;
     } else {
       ctx.throw(422, 'User Exist');
     }

@@ -1,6 +1,6 @@
 const isAuth = (ctx) => {
-  const { user } = ctx.state;
-  if (typeof user === 'undefined') {
+  const { user } = ctx.session.state;
+  if (!user.userIsAuth) {
     ctx.status = 401;
     return false;
   }

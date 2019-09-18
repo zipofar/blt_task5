@@ -64,7 +64,7 @@ router.route({
     if (!isAuth(ctx)) {
       return;
     }
-    const { user } = ctx.state;
+    const { user } = ctx.session.state;
     const newPage = await q.create({ ...ctx.request.body, user_id: user.userId });
     ctx.body = {
       data: newPage,

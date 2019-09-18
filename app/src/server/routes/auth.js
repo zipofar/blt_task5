@@ -1,7 +1,7 @@
 const Router = require('koa-joi-router');
+const bcrypt = require('bcryptjs');
 const qUser = require('../db/queries/users');
 const params = require('../utils/paramsChecker');
-const LoginAction = require('../actions/auth/LoginAction');
 const initState = require('../initAppState');
 
 const { Joi } = Router;
@@ -26,9 +26,10 @@ router.route({
       ctx.throw(404, 'Login or Password Incorrect');
     }
 
-    const jwtToken = LoginAction(user, password);
+    const hash = user.password;
+    const isCorrectPass = bcrypt.compareSync(password, hash);
 
-    if (!jwtToken) {
+    if (!isCorrectPass) {
       ctx.throw(404, 'Login or Password Incorrect');
     }
 

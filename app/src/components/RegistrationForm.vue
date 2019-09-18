@@ -3,12 +3,13 @@
     <input v-model="login" placeholder="Login">
     <input type="password" v-model="password" placeholder="Password">
     <button v-on:click="makeRegister">Register</button>
-    <p v-if="errorMsg">{{ errorMsg }}</p>
+    <p v-if="errMessage !== ''"><i>{{ errMessage }}</i></p>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import errorHandler from '../utils/errorHandler';
 
 const apiBaseUrl = process.env.VUE_APP_APIURL;
 
@@ -18,8 +19,9 @@ export default {
     return {
       login: '',
       password: '',
-      errorMsg: '',
+      errMessage: '',
       userIsAuth: !this.$store.state.user.userIsAuth,
+      fetchStateUser: '',
     };
   },
   methods: {
@@ -37,12 +39,14 @@ export default {
           password: this.password,
         },
       })
-      .then((res) => {
-        this.$store.commit('setUserAuth');
-        this.$store.commit('setUserInfo', res.data.data.user);
+      .then(({ data }) => {
+        this.fetchStateUser = 'success';
+        this.$store.commit('updateUser', data);
+        this.$router.push({ name: 'root' });
       })
       .catch((err) => {
-        this.errorMsg = err.response.data.message;
+        this.fetchStateUser = 'failure';
+        this.errMessage = errorHandler(err);
       })
     },
   },

@@ -5,7 +5,6 @@
     <button v-on:click="makeAuth">Login</button>
     <p v-if="errMessage !== ''"><i>{{ errMessage }}</i></p>
     <p v-if="fetchStateUser === 'request'"><i>Loading...</i></p>
-    <p v-if="fetchStateUser === 'success'"><i>Hello, {{ username }}</i></p>
   </div>
 </template>
 
@@ -45,8 +44,8 @@ export default {
       })
       .then(({ data }) => {
         this.fetchStateUser = 'success';
-        this.errMessage = '';
         this.$store.commit('updateUser', data);
+        this.$router.push({ name: 'root' });
       })
       .catch((err) => {
         this.fetchStateUser = 'failure';
