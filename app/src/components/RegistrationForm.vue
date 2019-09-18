@@ -19,7 +19,7 @@ export default {
       login: '',
       password: '',
       errorMsg: '',
-      userIsAuth: this.$store.state.userIsAuth,
+      userIsAuth: !this.$store.state.user.userIsAuth,
     };
   },
   methods: {
@@ -29,6 +29,9 @@ export default {
         method: 'post',
         baseURL: apiBaseUrl,
         url: '/v1/registration',
+        headers: {
+          'x-csrf-token': this.$cookie.get('csrf'),
+        },
         data: {
           username: this.login,
           password: this.password,

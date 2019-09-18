@@ -35,6 +35,9 @@ export default {
         method: 'post',
         baseURL: apiBaseUrl,
         url: '/v1/auth/login',
+        headers: {
+          'x-csrf-token': this.$cookie.get('csrf'),
+        },
         data: {
           username: this.login,
           password: this.password,
@@ -55,24 +58,6 @@ export default {
     username: function () {
       return this.$store.state.user.username;
     }
-  },
-  beforeMount: function () {
-    this.fetchStateCsrf = 'request';
-    this.errMessage = '';
-    axios({
-      method: 'get',
-      baseURL: apiBaseUrl,
-      url: '/v1/service/csrf',
-    })
-    .then(({ data }) => {
-      this.fetchStateCsrf = 'success';
-      this.csrf = data.csrf;
-      this.errMessage = '';
-    })
-    .catch((err) => {
-      this.fetchStateCsrf = 'failure';
-      this.errMessage = errorHandler(err);
-    });
   },
 }
 </script>

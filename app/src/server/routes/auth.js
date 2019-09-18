@@ -37,8 +37,6 @@ router.route({
 
     ctx.body = updatedUserInfo;
     ctx.session.state.user = updatedUserInfo;
-
-    ctx.cookies.set('jwtToken', jwtToken);
   },
 });
 

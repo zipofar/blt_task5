@@ -33,6 +33,9 @@ export default {
         method: 'post',
         baseURL: apiBaseUrl,
         url: '/v1/auth/logout',
+        headers: {
+          'x-csrf-token': this.$cookie.get('csrf'),
+        },
       })
       .then(({ data }) => {
         this.fetchStateAppState = 'success';
