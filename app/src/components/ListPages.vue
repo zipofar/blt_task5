@@ -1,29 +1,27 @@
 <template>
-  <div class="container">
-    <div class="list-pages">
-      <div v-for="page in pages">
-	<b-card
-	  :title="page.title"
-	>
-	  <b-card-text>{{ page.greeting }}</b-card-text>
-	  <b-link v-bind:href=page.url>Read more...</b-link>
-	</b-card>
-      </div>
-      <paginate
-	:page-count=countPagination
-	:click-handler="paginationHandler"
-	:prev-text="'Prev'"
-	:next-text="'Next'"
-	:container-class="'pagination'"
-	:page-class="'page-item'"
-	:pageLinkClass="'page-link'"
-	:prevClass="'page-item'"
-	:prevLinkClass="'page-link'"
-	:nextClass="'page-item'"
-	:nextLinkClass="'page-link'"
+  <div class="list-pages">
+    <div v-for="page in pages">
+      <b-card
+        :title="page.title"
       >
-      </paginate>
+        <b-card-text>{{ page.greeting }}</b-card-text>
+        <b-link v-bind:href=page.url>Read more...</b-link>
+      </b-card>
     </div>
+    <paginate
+      :page-count=countPagination
+      :click-handler="paginationHandler"
+      :prev-text="'Prev'"
+      :next-text="'Next'"
+      :container-class="'pagination'"
+      :page-class="'page-item'"
+      :pageLinkClass="'page-link'"
+      :prevClass="'page-item'"
+      :prevLinkClass="'page-link'"
+      :nextClass="'page-item'"
+      :nextLinkClass="'page-link'"
+    >
+    </paginate>
   </div>
 </template>
 

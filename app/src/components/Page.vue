@@ -1,19 +1,21 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div>
       <h1>{{ page.title }}</h1>
     </div>
-    <div class="row">
+    <div>
       <h2>{{ page.greeting }}</h2>
     </div>
-    <div class="row">
+    <div>
       <p>{{ page.content }}</p>
     </div>
+    <ListPages v-if="pageId === 'primary'"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import ListPages from './ListPages.vue';
 
 const apiBaseUrl = process.env.VUE_APP_APIURL;
 
@@ -22,11 +24,13 @@ export default {
   data: function () {
     return {
       page: {},
+      pageId: '',
     };
   },
   methods: {
     fetchPage: function () {
-      const { id } = this.$route.params;
+      const { id = 'primary' } = this.$route.params;
+      this.pageId = id;
       axios({
         method: 'get',
         baseURL: apiBaseUrl,
@@ -43,6 +47,9 @@ export default {
   },
   watch: {
     '$route': 'fetchPage'
+  },
+  components: {
+    ListPages,
   },
 }
 </script>
