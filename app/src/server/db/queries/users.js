@@ -2,6 +2,11 @@ const knex = require('../connection');
 
 const fields = ['id', 'username', 'role', 'password'];
 
+const countRecords = async () => {
+  const { count } = await knex('users').count('id').first();
+  return count;
+};
+
 const getAll = (opts) => {
   const { limit = 10, offset = 0 } = opts;
   return knex.select().from('users').limit(limit).offset(offset);
@@ -28,4 +33,5 @@ module.exports = {
   getAll,
   getByColumn,
   create,
+  countRecords,
 };

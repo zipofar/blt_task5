@@ -1,4 +1,5 @@
 const Router = require('koa-joi-router');
+const _ = require('lodash');
 const qUser = require('../db/queries/users');
 const paginate = require('../utils/paginator');
 const params = require('../utils/paramsChecker');
@@ -6,20 +7,30 @@ const { isAuth } = require('../services/auth');
 
 const router = Router();
 const permitParams = ['username', 'id', 'role'];
+const perPage = 5;
 
 router.get('/api/v1/users', async (ctx) => {
   if (!isAuth(ctx)) {
+    ctx.status = 403;
     return;
   }
   const { page } = ctx.request.query;
   const users = await qUser.getAll(paginate().page(page).perpage(5));
-  ctx.body = {
-    data: users.map(u => (params(u).permit(permitParams))),
-  };
+  const countRecords = await qUser.countRecords();
+  const countPagination = Math.ceil(countRecords / perPage);
+  if (_.isEmpty(users)) {
+    ctx.status = 404;
+  } else {
+    ctx.body = {
+      users: users.map(u => (params(u).permit(permitParams))),
+      countPagination,
+    };
+  }
 });
 
 router.get('/api/v1/users/:id', async (ctx) => {
   if (!isAuth(ctx)) {
+    ctx.status = 403;
     return;
   }
 

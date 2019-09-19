@@ -4,6 +4,7 @@ import Page from './components/Page.vue';
 import Page404 from './components/404.vue';
 import LoginForm from './components/LoginForm.vue';
 import RegistrationForm from './components/RegistrationForm.vue';
+import ListUsers from './components/ListUsers.vue';
 import store from './store';
 
 Vue.use(VueRouter);
@@ -19,6 +20,11 @@ const router = new VueRouter({
       path: '/pages/:id',
       name: 'pages',
       component: Page,
+    },
+    {
+      path: '/users',
+      name: 'users',
+      component: ListUsers,
     },
     {
       path: '/login',
