@@ -7,9 +7,10 @@
       <h2>{{ page.greeting }}</h2>
     </div>
     <div>
-      <p>{{ page.content }}</p>
+      <p v-if="!isPrimaryPage">{{ page.content }}</p>
+      <span v-if="isPrimaryPage" v-html="page.content"></span>
     </div>
-    <ListPages v-if="pageId === 'primary'"/>
+    <ListPages v-if="isPrimaryPage"/>
   </div>
 </template>
 
@@ -24,13 +25,13 @@ export default {
   data: function () {
     return {
       page: {},
-      pageId: '',
+      isPrimaryPage: false,
     };
   },
   methods: {
     fetchPage: function () {
       const { id = 'primary' } = this.$route.params;
-      this.pageId = id;
+      this.isPrimaryPage = id === 'primary';
       axios({
         method: 'get',
         baseURL: apiBaseUrl,
