@@ -17,12 +17,8 @@ router.get('/api/v1/pages', async (ctx) => {
     ctx.status = 404;
   } else {
     ctx.body = {
-      data: {
-        payload: pages,
-        agregate: {
-          countPagination,
-        },
-      },
+      pages,
+      countPagination,
     };
   }
 });

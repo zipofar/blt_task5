@@ -1,14 +1,29 @@
 <template>
-  <div class="list-pages">
-    <div v-for="page in pages"><a v-bind:href=page.url>{{ page.title }}</a></div>
-    <paginate
-      :page-count=countPagination
-      :click-handler="paginationHandler"
-      :prev-text="'Prev'"
-      :next-text="'Next'"
-      :container-class="'pagination'"
-    >
-    </paginate>
+  <div class="container">
+    <div class="list-pages">
+      <div v-for="page in pages">
+	<b-card
+	  :title="page.title"
+	>
+	  <b-card-text>{{ page.greeting }}</b-card-text>
+	  <b-link v-bind:href=page.url>Read more...</b-link>
+	</b-card>
+      </div>
+      <paginate
+	:page-count=countPagination
+	:click-handler="paginationHandler"
+	:prev-text="'Prev'"
+	:next-text="'Next'"
+	:container-class="'pagination'"
+	:page-class="'page-item'"
+	:pageLinkClass="'page-link'"
+	:prevClass="'page-item'"
+	:prevLinkClass="'page-link'"
+	:nextClass="'page-item'"
+	:nextLinkClass="'page-link'"
+      >
+      </paginate>
+    </div>
   </div>
 </template>
 
@@ -34,11 +49,11 @@ export default {
         url: '/v1/pages',
         params: { page },
      })
-      .then((res) => {
-        this.pages = res.data.data.payload.map(e => (
+      .then(({ data }) => {
+        this.pages = data.pages.map(e => (
           { ...e, url: `#/pages/${e.id}` }
-        ))
-        this.countPagination = parseInt(res.data.data.agregate.countPagination);
+        ));
+        this.countPagination = parseInt(data.countPagination);
       })
       .catch((err) => { console.log(err) })
     },

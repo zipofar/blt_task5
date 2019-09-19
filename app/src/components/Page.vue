@@ -1,8 +1,14 @@
 <template>
-  <div class="page">
-    <h1>{{ page.title }}</h1>
-    <h2>{{ page.greeting }}</h2>
-    <p>{{ page.content }}</p>
+  <div class="container">
+    <div class="row">
+      <h1>{{ page.title }}</h1>
+    </div>
+    <div class="row">
+      <h2>{{ page.greeting }}</h2>
+    </div>
+    <div class="row">
+      <p>{{ page.content }}</p>
+    </div>
   </div>
 </template>
 

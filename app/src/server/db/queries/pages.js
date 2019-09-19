@@ -5,7 +5,7 @@ const fields = ['id', 'title', 'greeting', 'content', 'user_id'];
 const getAll = (opts) => {
   const { limit = 10, offset = 0 } = opts;
   return knex
-    .column('id', 'title', 'user_id')
+    .column('id', 'title', 'greeting', 'user_id')
     .select()
     .from('pages')
     .limit(limit)
