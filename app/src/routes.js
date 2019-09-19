@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Page from './components/Page.vue';
+import MainPage from './components/MainPage.vue';
 import Page404 from './components/404.vue';
 import LoginForm from './components/LoginForm.vue';
 import RegistrationForm from './components/RegistrationForm.vue';
@@ -13,8 +14,7 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'root',
-      component: Page,
-      alias: '/pages/primary',
+      component: MainPage,
     },
     {
       path: '/pages/:id',

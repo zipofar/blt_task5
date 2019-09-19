@@ -30,9 +30,7 @@ router.get('/api/v1/pages', async (ctx) => {
 router.get('/api/v1/pages/primary', async (ctx) => {
   const page = await q.getPrimaryPage();
   if (page) {
-    ctx.body = {
-      data: page,
-    };
+    ctx.body = page;
   } else {
     ctx.throw(404, 'Page not found');
   }
@@ -41,9 +39,7 @@ router.get('/api/v1/pages/primary', async (ctx) => {
 router.get('/api/v1/pages/:id', async (ctx) => {
   const page = await q.getById(ctx.params.id);
   if (page) {
-    ctx.body = {
-      data: page,
-    };
+    ctx.body = page;
   } else {
     ctx.throw(404, 'Page not found');
   }
@@ -66,9 +62,7 @@ router.route({
     }
     const { user } = ctx.session.state;
     const newPage = await q.create({ ...ctx.request.body, user_id: user.userId });
-    ctx.body = {
-      data: newPage,
-    };
+    ctx.body = newPage;
   },
 });
 
