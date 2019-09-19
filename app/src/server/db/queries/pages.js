@@ -8,12 +8,13 @@ const getAll = (opts) => {
     .column('id', 'title', 'greeting', 'user_id')
     .select()
     .from('pages')
+    .where({ isprimary: false })
     .limit(limit)
     .offset(offset);
 };
 
 const countRecords = async () => {
-  const { count } = await knex('pages').count('id').first();
+  const { count } = await knex('pages').where({ isprimary: false }).count('id').first();
   return count;
 };
 
