@@ -1,12 +1,30 @@
 <template>
-  <div class="menu">
-    <ul>
-      <li><a href="#/">Home</a></li>
-      <li v-if="isGuest"><a href="#/login">Login</a></li>
-      <li v-if="isGuest"><a href="#/registration">Registration</a></li>
-      <li v-if="!isGuest">Hello, {{ username }} <button v-on:click="logout">Logout</button></li>
-    </ul>
-  </div>
+  <b-navbar toggleable="lg">
+    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    <b-collapse id="nav-collapse" is-nav>
+
+      <b-navbar-nav>
+	<b-nav-item href="#/">Home</b-nav-item>
+      </b-navbar-nav>
+
+      <b-navbar-nav class="ml-auto">
+	<b-nav-form inline>
+	  <b-button v-if="isGuest" href="#/login" variant="outline-primary">Login</b-button>
+	  <b-button v-if="isGuest" href="#/registration" variant="outline-primary">Registration</b-button>
+	  <b-form-group
+	    v-if="!isGuest"
+	    :label="username"
+            label-for="btn-logout"
+	    label-cols-sm="4"
+	    label-cols-lg="4"
+          >
+	    <b-button v-on:click="logout" id="btn-logout">Logout</b-button>
+	  </b-form-group>
+	</b-nav-form>
+      </b-navbar-nav class="ml-auto">
+
+    </b-collapse>
+  </b-navbar>
 </template>
 
 <script>
