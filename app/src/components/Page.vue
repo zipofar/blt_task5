@@ -10,6 +10,7 @@
       <p v-if="!isPrimaryPage">{{ page.content }}</p>
       <span v-if="isPrimaryPage" v-html="page.content"></span>
     </div>
+    <a v-if="isCreator" href="#/">Edit</a>
     <ListPages v-if="isPrimaryPage"/>
   </div>
 </template>
@@ -26,6 +27,7 @@ export default {
     return {
       page: {},
       isPrimaryPage: false,
+      isCreator: false,
     };
   },
   methods: {
@@ -39,6 +41,7 @@ export default {
       })
       .then(({ data }) => {
         this.page = data;
+        this.isCreator = data.user_id === this.$store.state.user.id;
       })
       .catch((err) => { console.log(err) })
     },

@@ -13,6 +13,10 @@ const store = new Vuex.Store({
       state.user = { ...payload };
     },
   },
+  getters: {
+    userIsAuth: state => (state.user.userIsAuth),
+    userIsAdmin: state => (state.user.role === 'admin'),
+  },
 });
 
 export default store;

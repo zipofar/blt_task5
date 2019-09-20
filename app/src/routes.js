@@ -25,6 +25,7 @@ const router = new VueRouter({
       path: '/users',
       name: 'users',
       component: ListUsers,
+      meta: { admin: true },
     },
     {
       path: '/login',
@@ -46,13 +47,18 @@ const router = new VueRouter({
   ],
 });
 
+
 router.beforeEach((to, from, next) => {
+  const { userIsAuth, userIsAdmin } = store.getters;
   if (to.matched.some(rec => rec.meta.guest)) {
-    const { userIsAuth } = store.state.user;
     if (userIsAuth) {
-      next({
-        name: 'root',
-      });
+      next({ name: 'root' });
+    } else {
+      next();
+    }
+  } else if (to.matched.some(rec => rec.meta.admin)) {
+    if (!userIsAdmin) {
+      next({ name: 'root' });
     } else {
       next();
     }

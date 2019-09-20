@@ -54,11 +54,50 @@ router.route({
   },
   handler: async (ctx) => {
     if (!isAuth(ctx)) {
+      ctx.status = 403;
       return;
     }
     const { user } = ctx.session.state;
     const newPage = await q.create({ ...ctx.request.body, user_id: user.userId });
     ctx.body = newPage;
+  },
+});
+
+router.route({
+  method: 'post',
+  path: '/api/v1/pages/:id',
+  validate: {
+    body: {
+      title: Joi.string().min(1).max(100).required(),
+      greeting: Joi.string().min(1).max(100).required(),
+      content: Joi.string(),
+    },
+    type: 'json',
+  },
+  handler: async (ctx) => {
+    if (!isAuth(ctx)) {
+      ctx.throw(403, 'You are not authenticated');
+    }
+
+    const page = await q.getById(ctx.params.id);
+
+    if (!page) {
+      ctx.throw(404, 'Page not found');
+    }
+
+    const { user } = ctx.session.state;
+
+    if (page.user_id === user.id) {
+      const updatedPage = await q.update({
+        ...ctx.request.body,
+        user_id: user.id,
+      }, page.id);
+
+      ctx.body = updatedPage;
+      return;
+    }
+
+    ctx.throw(403, 'You are not owner this page');
   },
 });
 

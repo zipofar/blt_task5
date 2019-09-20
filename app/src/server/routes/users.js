@@ -3,14 +3,14 @@ const _ = require('lodash');
 const qUser = require('../db/queries/users');
 const paginate = require('../utils/paginator');
 const params = require('../utils/paramsChecker');
-const { isAuth } = require('../services/auth');
+const { isAdmin } = require('../services/auth');
 
 const router = Router();
 const permitParams = ['username', 'id', 'role'];
 const perPage = 5;
 
 router.get('/api/v1/users', async (ctx) => {
-  if (!isAuth(ctx)) {
+  if (!isAdmin(ctx)) {
     ctx.status = 403;
     return;
   }
@@ -29,7 +29,7 @@ router.get('/api/v1/users', async (ctx) => {
 });
 
 router.get('/api/v1/users/:id', async (ctx) => {
-  if (!isAuth(ctx)) {
+  if (!isAdmin(ctx)) {
     ctx.status = 403;
     return;
   }

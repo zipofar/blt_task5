@@ -43,10 +43,19 @@ const create = async (data) => {
   return page[0];
 };
 
+const update = async (data, id) => {
+  const page = await knex('pages')
+    .where({ id })
+    .returning(fields)
+    .update(data);
+  return page[0];
+};
+
 module.exports = {
   getAll,
   getById,
   create,
+  update,
   getAllByUser,
   getPrimaryPage,
   countRecords,
