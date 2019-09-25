@@ -1,5 +1,5 @@
 <template>
-  <div class="list-pages">
+  <div v-show="fetchStatePages === 'success'" class="list-pages">
     <div v-for="page in pages">
       <b-card
         :title="page.title"
@@ -37,10 +37,12 @@ export default {
       currentPaginationNumber: 1,
       countPagination: 0,
       pages: [],
+      fetchStatePages: '',
     }
   },
   methods: {
     fetchPages: function (page) {
+      this.fetchStatePages = 'request';
       axios({
         method: 'get',
         baseURL: apiBaseUrl,
@@ -48,6 +50,7 @@ export default {
         params: { page },
      })
       .then(({ data }) => {
+        this.fetchStatePages = 'success';
         this.pages = data.pages.map(e => (
           { ...e, url: `#/pages/${e.id}` }
         ));
