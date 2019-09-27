@@ -5,13 +5,35 @@
 
       <b-navbar-nav>
 	<b-nav-item href="#/">Home</b-nav-item>
-	<b-nav-item href="#/users">Users</b-nav-item>
+	<b-nav-item
+          v-b-tooltip.hover
+          title="Only for admin"
+          href="#/users"
+          v-bind:disabled="!isAdmin"
+        >
+          Users
+        </b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
 	<b-nav-form inline>
-	  <b-button v-if="isGuest" href="#/login" variant="outline-primary">Login</b-button>
-	  <b-button v-if="isGuest" href="#/registration" variant="outline-primary">Registration</b-button>
+
+	  <b-button
+            v-if="isGuest"
+            href="#/login"
+            variant="outline-primary"
+          >
+            Login
+          </b-button>
+
+	  <b-button
+            v-if="isGuest"
+            href="#/registration"
+            variant="outline-primary"
+          >
+            Registration
+          </b-button>
+
 	  <b-form-group
 	    v-if="!isGuest"
 	    :label="username"
@@ -42,6 +64,7 @@ export default {
       pages: [],
       errMessage: '',
       fetchStateAppState: '',
+      isAdmin: this.$store.getters.userIsAdmin,
     }
   },
   methods: {
