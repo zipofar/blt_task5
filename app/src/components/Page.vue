@@ -75,7 +75,11 @@ export default {
   name: 'Page',
   data: function () {
     return {
-      form: {},
+      form: {
+        title: '',
+        greeting: '',
+        content: '',
+      },
       page: {},
       isPrimaryPage: false,
       isCreator: false,
@@ -94,7 +98,7 @@ export default {
       })
       .then(({ data }) => {
         this.page = data;
-        this.form = data;
+        this.form = Object.keys(this.form).reduce((a, e) => ( { ...a, [e]:data[e] } ), {});
         this.isCreator = data.user_id === this.$store.state.user.id;
       })
       .catch((err) => { console.log(err) });
@@ -115,7 +119,7 @@ export default {
       })
       .then(({ data }) => {
         this.page = data;
-        this.form = data;
+        this.form = Object.keys(this.form).reduce((a, e) => ( { ...a, [e]:data[e] } ), {});
         this.isCreator = data.user_id === this.$store.state.user.id;
       })
       .catch((err) => { console.log(err) });
