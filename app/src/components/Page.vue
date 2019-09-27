@@ -54,7 +54,8 @@
           ></b-form-textarea>
         </b-form-group>
 
-        <b-button type="submit" variant="primary">Save</b-button>
+        <b-button type="submit" variant="outline-primary">Save</b-button>
+        <b-button @click="onCancel" variant="outline-primary">Cancel</b-button>
 
       </b-form>
     </div>
@@ -121,6 +122,9 @@ export default {
     },
     onEdit() {
       this.showEditForm = true;
+    },
+    onCancel() {
+      this.showEditForm = false;
     },
   },
   created: function () {
