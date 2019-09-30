@@ -9,9 +9,9 @@ exports.up = function (knex, Promise) {
 
     knex.schema.createTable('pages', (table) => {
       table.increments();
-      table.string('title').notNullable();
-      table.string('greeting').notNullable();
-      table.string('content');
+      table.text('title').notNullable();
+      table.text('greeting').notNullable();
+      table.text('content');
       table.bool('isprimary').notNullable().defaultTo('f');
       table.integer('user_id')
         .notNullable()
