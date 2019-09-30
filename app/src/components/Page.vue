@@ -54,8 +54,10 @@
           ></b-form-textarea>
         </b-form-group>
 
-        <b-button type="submit" variant="outline-primary">Save</b-button>
-        <b-button @click="onCancel" variant="outline-primary">Cancel</b-button>
+        <b-button-group>
+          <b-button type="submit" variant="outline-primary">Save</b-button>
+          <b-button @click="onCancel" variant="outline-primary">Cancel</b-button>
+        </b-button-group>
 
       </b-form>
     </div>

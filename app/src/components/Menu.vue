@@ -18,21 +18,21 @@
       <b-navbar-nav class="ml-auto">
 	<b-nav-form inline>
 
-	  <b-button
-            v-if="isGuest"
-            href="#/login"
-            variant="outline-primary"
-          >
-            Login
-          </b-button>
+          <b-button-group v-if="isGuest">
+            <b-button
+              href="#/login"
+              variant="outline-primary"
+            >
+              Login
+            </b-button>
 
-	  <b-button
-            v-if="isGuest"
-            href="#/registration"
-            variant="outline-primary"
-          >
-            Registration
-          </b-button>
+            <b-button
+              href="#/registration"
+              variant="outline-primary"
+            >
+              Registration
+            </b-button>
+          </b-button-group>
 
 	  <b-form-group
 	    v-if="!isGuest"
