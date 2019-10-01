@@ -1,11 +1,15 @@
+const fs = require('fs');
+
 const calcUserId = (currentId, countIds) => (
   currentId > countIds ? calcUserId(currentId - countIds, countIds) : currentId
 );
 
+const contentPrimaryPage = fs.readFileSync('./primaryPage.html', 'utf-8');
+
 const primaryPage = {
   title: 'Primary page',
   greeting: 'Greeting from primary',
-  content: '<h1>Hello</h1>',
+  content: contentPrimaryPage,
   isprimary: 'true',
   user_id: 1,
 };
