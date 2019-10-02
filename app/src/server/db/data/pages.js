@@ -4,7 +4,7 @@ const calcUserId = (currentId, countIds) => (
   currentId > countIds ? calcUserId(currentId - countIds, countIds) : currentId
 );
 
-const contentPrimaryPage = fs.readFileSync('./primaryPage.html', 'utf-8');
+const contentPrimaryPage = fs.readFileSync('./src/server/db/data/primaryPage.html', 'utf-8');
 
 const primaryPage = {
   title: 'Primary page',

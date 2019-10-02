@@ -23,6 +23,8 @@ seed:
 dev:
 	docker-compose -f docker-compose_dev.yml up -d
 
+compose: install migrate seed dev
+
 test:
 	docker-compose -f docker-compose_dev.yml run app_server npx mocha --timeout 5000
 
