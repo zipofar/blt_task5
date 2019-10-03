@@ -9,6 +9,7 @@
       </b-card>
     </div>
     <paginate
+      :force-page=numCurrentPagination
       :page-count=countPagination
       :click-handler="paginationHandler"
       :prev-text="'Prev'"
@@ -34,7 +35,7 @@ export default {
   name: 'ListPages',
   data: function () {
     return {
-      currentPaginationNumber: 1,
+      numCurrentPagination: 1,
       countPagination: 0,
       pages: [],
       fetchStatePages: '',
@@ -59,12 +60,14 @@ export default {
       .catch((err) => { console.log(err) })
     },
     paginationHandler: function (numPagination) {
-      this.currentPaginationNumber=numPagination;
+      this.numCurrentPagination=numPagination;
       this.fetchPages(numPagination)
     }
   },
   created: function () {
-    this.fetchPages(this.currentPaginationNumber)
+    const numCurrentPagination = this.$store.getters.numCurrentPagination;
+    this.numCurrentPagination = numCurrentPagination;
+    this.fetchPages(numCurrentPagination);
   }
 }
 </script>

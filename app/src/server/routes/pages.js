@@ -20,6 +20,7 @@ router.get('/api/v1/pages', async (ctx) => {
       pages,
       countPagination,
     };
+    ctx.session.state.numOpenedPage = page;
   }
 });
 

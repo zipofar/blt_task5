@@ -12,6 +12,9 @@ export default {
   name: 'app',
   components: {
     Menu,
-  }
+  },
+  beforeCreate: function () {
+    this.$store.dispatch('loadState')
+  },
 }
 </script>
