@@ -17,6 +17,16 @@ const store = new Vuex.Store({
     updateUser(state, payload) {
       state.user = { ...payload };
     },
+    fetchUserLoginRequest(state) {
+      state.UILogin.makeLogin = 'request';
+    },
+    fetchUserLoginSuccess(state) {
+      state.UILogin.makeLogin = 'success';
+    },
+    fetchUserLoginFailure(state, { msg }) {
+      state.UILogin.makeLogin = 'failure';
+      state.UILogin.errMsg = msg;
+    },
   },
   actions: {
     loadState(ctx) {
@@ -38,7 +48,7 @@ const store = new Vuex.Store({
         baseURL: apiBaseUrl,
         url: '/v1/auth/logout',
         headers: {
-          'x-csrf-token': this.$cookie.get('csrf'),
+          'x-csrf-token': Vue.cookie.get('csrf'),
         },
       })
         .then(({ data }) => {
@@ -46,6 +56,26 @@ const store = new Vuex.Store({
         })
         .catch((err) => {
           errorHandler(err);
+        });
+    },
+    login(ctx, { username, password, router }) {
+      axios({
+        method: 'post',
+        baseURL: apiBaseUrl,
+        url: '/v1/auth/login',
+        headers: {
+          'x-csrf-token': Vue.cookie.get('csrf'),
+        },
+        data: { username, password },
+      })
+        .then(({ data }) => {
+          ctx.commit('updateUser', data);
+          ctx.commit('fetchUserLoginSuccess');
+          router.push({ name: 'root' });
+        })
+        .catch((err) => {
+          const msg = errorHandler(err);
+          ctx.commit('fetchUserLoginFailure', { msg });
         });
     },
   },

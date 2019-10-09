@@ -1,62 +1,79 @@
 <template>
-  <div class="login">
-    <input v-model="login" placeholder="Login">
-    <input type="password" v-model="password" placeholder="Password">
-    <button v-on:click="makeAuth">Login</button>
-    <p v-if="errMessage !== ''"><i>{{ errMessage }}</i></p>
-    <p v-if="fetchStateUser === 'request'"><i>Loading...</i></p>
+  <div class="container">
+    <b-form @submit="onSubmit">
+
+      <b-form-group
+        id="login-group-1"
+        label="Login:"
+        label-for="input-login"
+      >
+
+        <b-form-input
+          id="input-login"
+          v-model="login"
+          required
+          placeholder="Enter login"
+        ></b-form-input>
+
+      </b-form-group>
+
+      <b-form-group
+        id="password-group-1"
+        label="Password:"
+        label-for="input-password"
+      >
+
+        <b-form-input
+          id="input-password"
+          v-model="password"
+          type="password"
+          required
+          placeholder="Enter password"
+        ></b-form-input>
+
+        <b-form-invalid-feedback :state="!issetErr">
+          {{ validationErr }}
+        </b-form-invalid-feedback>
+
+      </b-form-group>
+
+      <b-button type="submit" variant="primary">Login</b-button>
+
+
+    </b-form>
+
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import errorHandler from '../utils/errorHandler';
-
-const apiBaseUrl = process.env.VUE_APP_APIURL;
-
 export default {
   name: 'LoginForm',
   data: function () {
     return {
       login: '',
       password: '',
-      csrf: '',
-      errMessage: '',
-      fetchStateUser: '',
-      fetchStateCsrf: '',
+      errMessage: 'UUU',
     };
   },
   methods: {
-    makeAuth: function () {
-      this.fetchStateUser = 'request';
-      this.errMessage = '';
-      axios({
-        method: 'post',
-        baseURL: apiBaseUrl,
-        url: '/v1/auth/login',
-        headers: {
-          'x-csrf-token': this.$cookie.get('csrf'),
-        },
-        data: {
-          username: this.login,
-          password: this.password,
-        },
-      })
-      .then(({ data }) => {
-        this.fetchStateUser = 'success';
-        this.$store.commit('updateUser', data);
-        this.$router.push({ name: 'root' });
-      })
-      .catch((err) => {
-        this.fetchStateUser = 'failure';
-        this.errMessage = errorHandler(err);
-      })
+    onSubmit (e) {
+      e.preventDefault();
+      const payload = {
+        username: this.login,
+        password: this.password,
+        router: this.$router,
+      };
+
+      this.$store.dispatch('login', payload);
     },
   },
   computed: {
-    username: function () {
-      return this.$store.state.user.username;
-    }
+    validationErr () {
+      return this.$store.state.UILogin.errMsg;
+    },
+    issetErr () {
+      return this.$store.state.UILogin.makeLogin === 'failure';
+    },
   },
 }
 </script>

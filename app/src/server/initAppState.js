@@ -3,7 +3,12 @@ const initState = {
     userIsAuth: false,
     role: '',
   },
+  UILogin: {
+    makeLogin: '',
+    errMsg: '',
+  },
   numCurrentPagination: 1,
+  test: '',
 };
 
 module.exports = initState;
