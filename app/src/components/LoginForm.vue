@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+
     <b-form @submit="onSubmit">
 
       <b-form-group
@@ -39,7 +40,6 @@
 
       <b-button type="submit" variant="primary">Login</b-button>
 
-
     </b-form>
 
   </div>
@@ -52,7 +52,6 @@ export default {
     return {
       login: '',
       password: '',
-      errMessage: 'UUU',
     };
   },
   methods: {

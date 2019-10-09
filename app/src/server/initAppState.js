@@ -7,8 +7,11 @@ const initState = {
     makeLogin: '',
     errMsg: '',
   },
+  UIRegistration: {
+    makeRegistration: '',
+    errMsg: '',
+  },
   numCurrentPagination: 1,
-  test: '',
 };
 
 module.exports = initState;
