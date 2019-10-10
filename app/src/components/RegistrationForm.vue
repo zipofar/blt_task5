@@ -16,7 +16,8 @@
           v-model="login"
           required
           placeholder="Enter login"
-          :state="loginIsFill"
+          :state="loginFieldState"
+          @blur="changeStateLoginField"
         ></b-form-input>
 
       </b-form-group>
@@ -34,7 +35,8 @@
           type="password"
           required
           placeholder="Enter password"
-          :state="passwordIsFill"
+          :state="passwordFieldState"
+          @blur="changeStatePasswordField"
         ></b-form-input>
 
       </b-form-group>
@@ -51,7 +53,8 @@
           type="password"
           required
           placeholder="Enter password"
-          :state="passwordIsSame"
+          :state="passwordConfirmFieldState"
+          @blur="changeStatePasswordConfirmField"
         ></b-form-input>
 
         <b-form-invalid-feedback :state="!issetErr">
@@ -59,7 +62,7 @@
         </b-form-invalid-feedback>
 
       </b-form-group>
-      <b-button type="submit" :disabled="submitIsOff" :variant="colorSubmit">Login</b-button>
+      <b-button type="submit" :disabled="isSubmitBtnDisabled" :variant="colorSubmit">Register</b-button>
 
     </b-form>
 
@@ -67,6 +70,27 @@
 </template>
 
 <script>
+const isValidLogin = (text) => (text !== '' && text.length > 2);
+const isValidPassword = (text) => (text !== '' && text.length > 2);
+
+const mapState = (state, dataIsValid) => {
+  if (state === 'init') {
+    return null;
+  }
+  if (state === 'success' && !dataIsValid) {
+    return false;
+  }
+  if (state === 'success' && dataIsValid) {
+    return true;
+  }
+  if (state === 'failure' && dataIsValid) {
+    return true;
+  }
+  if (state === 'failure' && !dataIsValid) {
+    return false;
+  }
+};
+
 export default {
   name: 'RegistrationForm',
   data: function () {
@@ -74,10 +98,13 @@ export default {
       login: '',
       password: '',
       confirmPassword: '',
+      loginFieldStateStore: 'init',
+      passwordFieldStateStore: 'init',
+      passwordConfirmFieldStateStore: 'init',
     };
   },
   methods: {
-    onSubmit (e) {
+    onSubmit(e) {
       e.preventDefault();
       const payload = {
         username: this.login,
@@ -87,6 +114,16 @@ export default {
 
       this.$store.dispatch('makeRegistration', payload);
     },
+    changeStateLoginField() {
+      this.loginFieldStateStore = isValidLogin(this.login) ? 'success' : 'failure';
+    },
+    changeStatePasswordField() {
+      this.passwordFieldStateStore = isValidPassword(this.password) ? 'success' : 'failure';
+    },
+    changeStatePasswordConfirmField() {
+      const isSamePassword = this.confirmPassword === this.password;
+      this.passwordConfirmFieldStateStore = isValidPassword(this.confirmPassword) && isSamePassword ? 'success' : 'failure';
+    },
   },
   computed: {
     validationErr() {
@@ -95,20 +132,21 @@ export default {
     issetErr() {
       return this.$store.state.UIRegistration.makeRegistration === 'failure';
     },
-    passwordIsSame() {
+    passwordConfirmFieldState() {
+      return mapState(this.passwordConfirmFieldStateStore, isValidPassword(this.password));
       return this.password === this.confirmPassword && this.confirmPassword !== '' && this.confirmPassword.length > 2;
     },
-    passwordIsFill() {
-      return this.password !== '' && this.password.length > 2;
+    passwordFieldState() {
+      return mapState(this.passwordFieldStateStore, isValidPassword(this.password));
     },
-    loginIsFill() {
-      return this.login !== '' && this.login.length > 2;
+    loginFieldState() {
+      return mapState(this.loginFieldStateStore, isValidLogin(this.login));
     },
-    submitIsOff() {
-      return !this.loginIsFill || !this.passwordIsFill || !this.passwordIsSame;
+    isSubmitBtnDisabled() {
+      return !this.loginFieldState || !this.passwordFieldState || !this.passwordConfirmFieldState;
     },
     colorSubmit() {
-      return this.submitIsOff ? '' : 'primary';
+      return this.isSubmitBtnDisabled ? '' : 'primary';
     },
   },
 }
