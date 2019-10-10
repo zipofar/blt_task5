@@ -53,26 +53,20 @@
 <script>
 export default {
   name: 'Menu',
-  data: function () {
-    return {
-      currentPage: 1,
-      pages: [],
-      errMessage: '',
-      fetchStateAppState: '',
-      isAdmin: this.$store.getters.userIsAdmin,
-    }
-  },
   methods: {
     logout: function () {
       this.$store.dispatch('logout');
     }
   },
   computed: {
-    username: function () {
+    username() {
       return this.$store.state.user.username;
     },
-    isGuest: function () {
+    isGuest() {
       return !this.$store.getters.userIsAuth;
+    },
+    isAdmin() {
+      return this.$store.getters.userIsAdmin;
     },
   },
 }
