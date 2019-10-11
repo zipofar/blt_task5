@@ -38,7 +38,7 @@ export default {
     }
   },
   methods: {
-    fetchPages: function (page) {
+    fetchPages (page) {
       axios({
         method: 'get',
         baseURL: apiBaseUrl,
@@ -53,13 +53,13 @@ export default {
       })
       .catch((err) => { console.log(err) })
     },
-    paginationHandler: function (numPagination) {
+    paginationHandler(numPagination) {
       this.currentPaginationNumber=numPagination;
-      this.fetchPages(numPagination)
+      this.fetchPages(numPagination);
     }
   },
-  created: function () {
-    this.fetchPages(this.currentPaginationNumber)
-  }
+  created() {
+    this.fetchPages(this.currentPaginationNumber);
+  },
 }
 </script>
