@@ -133,7 +133,7 @@ export default {
       this.showEditForm = false;
     },
   },
-  created: function () {
+  created() {
     this.fetchPage()
   },
   watch: {

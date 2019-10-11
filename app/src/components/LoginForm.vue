@@ -55,7 +55,7 @@ export default {
     };
   },
   methods: {
-    onSubmit (e) {
+    onSubmit(e) {
       e.preventDefault();
       const payload = {
         username: this.login,
@@ -67,10 +67,10 @@ export default {
     },
   },
   computed: {
-    validationErr () {
+    validationErr() {
       return this.$store.state.UILogin.errMsg;
     },
-    issetErr () {
+    issetErr() {
       return this.$store.state.UILogin.makeLogin === 'failure';
     },
   },

@@ -38,7 +38,7 @@ export default {
     }
   },
   methods: {
-    fetchPages (page) {
+    fetchPages(page) {
       axios({
         method: 'get',
         baseURL: apiBaseUrl,

@@ -42,7 +42,7 @@ export default {
     }
   },
   methods: {
-    fetchPages (page) {
+    fetchPages(page) {
       this.fetchStatePages = 'request';
       axios({
         method: 'get',
@@ -59,15 +59,15 @@ export default {
       })
       .catch((err) => { console.log(err) })
     },
-    paginationHandler (numPagination) {
+    paginationHandler(numPagination) {
       this.numCurrentPagination=numPagination;
       this.fetchPages(numPagination)
     }
   },
-  created: function () {
+  created() {
     const numCurrentPagination = this.$store.getters.numCurrentPagination;
     this.numCurrentPagination = numCurrentPagination;
     this.fetchPages(numCurrentPagination);
-  }
+  },
 }
 </script>
