@@ -57,3 +57,7 @@ Open <https://localhost:3000>
 * User credentials:
   * login: user0
   * password: pass0
+
+
+## Misc
+* Пришлось форкнуть и исправить пакет для пагинации
