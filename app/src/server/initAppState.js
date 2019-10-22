@@ -11,7 +11,12 @@ const initState = {
     makeRegistration: '',
     errMsg: '',
   },
-  numCurrentPagination: 1,
+  UIPages: {
+    numCurrentPagination: 1,
+    countPagination: 1,
+    stateFetch: '',
+  },
+  pages: [],
 };
 
 module.exports = initState;

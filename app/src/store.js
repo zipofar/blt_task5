@@ -17,6 +17,15 @@ const store = new Vuex.Store({
     updateUser(state, payload) {
       state.user = { ...payload };
     },
+    updatePages(state, payload) {
+      state.pages = payload;
+    },
+    updateCountPagination(state, payload) {
+      state.UIPages.countPagination = payload;
+    },
+    updateNumCurrentPagination(state, payload) {
+      state.UIPages.numCurrentPagination = payload;
+    },
     userLoginRequest(state) {
       state.UILogin.makeLogin = 'request';
     },
@@ -26,6 +35,15 @@ const store = new Vuex.Store({
     userLoginFailure(state, { msg }) {
       state.UILogin.makeLogin = 'failure';
       state.UILogin.errMsg = msg;
+    },
+    fetchPagesRequest(state) {
+      state.UIPages.stateFetch = 'request';
+    },
+    fetchPagesSuccess(state) {
+      state.UIPages.stateFetch = 'success';
+    },
+    fetchPagesFailure(state) {
+      state.UIPages.stateFetch = 'failure';
     },
     userRegistrationRequest(state) {
       state.UIRegistration.makeRegistration = 'request';
@@ -39,82 +57,102 @@ const store = new Vuex.Store({
     },
   },
   actions: {
-    loadState(ctx) {
-      axios({
-        method: 'get',
-        baseURL: apiBaseUrl,
-        url: '/v1/service/app_state',
-      })
-        .then(({ data }) => {
-          ctx.commit('updateState', data);
-        })
-        .catch((err) => {
-          errorHandler(err);
+    async loadState(ctx) {
+      try {
+        const res = await axios({
+          method: 'get',
+          baseURL: apiBaseUrl,
+          url: '/v1/service/app_state',
         });
+        ctx.commit('updateState', res.data);
+      } catch (err) {
+        errorHandler(err);
+      }
     },
-    logout(ctx) {
-      axios({
-        method: 'post',
-        baseURL: apiBaseUrl,
-        url: '/v1/auth/logout',
-        headers: {
-          'x-csrf-token': Vue.cookie.get('csrf'),
-        },
-      })
-        .then(({ data }) => {
-          ctx.commit('updateState', data);
-        })
-        .catch((err) => {
-          errorHandler(err);
+    async logout(ctx) {
+      try {
+        const res = await axios({
+          method: 'post',
+          baseURL: apiBaseUrl,
+          url: '/v1/auth/logout',
+          headers: {
+            'x-csrf-token': Vue.cookie.get('csrf'),
+          },
         });
+        ctx.commit('updateState', res.data);
+      } catch (err) {
+        errorHandler(err);
+      }
     },
-    login(ctx, { username, password, router }) {
+    async login(ctx, { username, password, router }) {
       ctx.commit('userLoginRequest');
-      axios({
-        method: 'post',
-        baseURL: apiBaseUrl,
-        url: '/v1/auth/login',
-        headers: {
-          'x-csrf-token': Vue.cookie.get('csrf'),
-        },
-        data: { username, password },
-      })
-        .then(({ data }) => {
-          ctx.commit('updateUser', data);
-          ctx.commit('userLoginSuccess');
-          router.push({ name: 'root' });
-        })
-        .catch((err) => {
-          const msg = errorHandler(err);
-          ctx.commit('userLoginFailure', { msg });
+      try {
+        const res = await axios({
+          method: 'post',
+          baseURL: apiBaseUrl,
+          url: '/v1/auth/login',
+          headers: {
+            'x-csrf-token': Vue.cookie.get('csrf'),
+          },
+          data: { username, password },
         });
+
+        ctx.commit('updateUser', res.data);
+        ctx.commit('userLoginSuccess');
+        router.push({ name: 'root' });
+      } catch (err) {
+        const msg = errorHandler(err);
+        ctx.commit('userLoginFailure', { msg });
+      }
     },
-    makeRegistration(ctx, { username, password, router }) {
+    async makeRegistration(ctx, { username, password, router }) {
       ctx.commit('userRegistrationRequest');
-      axios({
-        method: 'post',
-        baseURL: apiBaseUrl,
-        url: '/v1/registration',
-        headers: {
-          'x-csrf-token': Vue.cookie.get('csrf'),
-        },
-        data: { username, password },
-      })
-        .then(({ data }) => {
-          ctx.commit('updateUser', data);
-          ctx.commit('userRegistrationSuccess');
-          router.push({ name: 'root' });
-        })
-        .catch((err) => {
-          const msg = errorHandler(err);
-          ctx.commit('userRegistrationFailure', { msg });
+      try {
+        const res = await axios({
+          method: 'post',
+          baseURL: apiBaseUrl,
+          url: '/v1/registration',
+          headers: {
+            'x-csrf-token': Vue.cookie.get('csrf'),
+          },
+          data: { username, password },
         });
+        ctx.commit('updateUser', res.data);
+        ctx.commit('userRegistrationSuccess');
+        router.push({ name: 'root' });
+      } catch (err) {
+        const msg = errorHandler(err);
+        ctx.commit('userRegistrationFailure', { msg });
+      }
+    },
+    async fetchPages(ctx, page) {
+      ctx.commit('fetchPagesRequest');
+      try {
+        const res = await axios({
+          method: 'get',
+          baseURL: apiBaseUrl,
+          url: '/v1/pages',
+          params: { page },
+        });
+        ctx.commit('fetchPagesSuccess');
+
+        const { data } = res;
+        const pages = data.pages.map(e => (
+          { ...e, url: `#/pages/${e.id}` }
+        ));
+        ctx.commit('updatePages', pages);
+
+        const countPagination = parseInt(data.countPagination, 10);
+        ctx.commit('updateCountPagination', countPagination);
+      } catch (err) {
+        ctx.commit('fetchPagesFailure');
+        errorHandler(err);
+      }
     },
   },
   getters: {
     userIsAuth: state => (state.user.userIsAuth),
     userIsAdmin: state => (state.user.role === 'admin'),
-    numCurrentPagination: state => (state.numCurrentPagination),
   },
 });
 

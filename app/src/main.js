@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Paginate from 'vuejs-paginate';
+import Paginate from 'vuejs-paginate-z';
 import VueCookie from 'vue-cookie';
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';

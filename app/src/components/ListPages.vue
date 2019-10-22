@@ -1,5 +1,5 @@
 <template>
-  <div v-show="fetchStatePages === 'success'" class="list-pages">
+  <div v-show="stateFetchPages === 'success'" class="list-pages">
     <div v-for="page in pages">
       <b-card
         :title="page.title"
@@ -27,47 +27,31 @@
 </template>
 
 <script>
-import axios from 'axios';
-
-const apiBaseUrl = process.env.VUE_APP_APIURL;
-
 export default {
   name: 'ListPages',
-  data: function () {
-    return {
-      numCurrentPagination: 1,
-      countPagination: 0,
-      pages: [],
-      fetchStatePages: '',
-    }
-  },
   methods: {
-    fetchPages(page) {
-      this.fetchStatePages = 'request';
-      axios({
-        method: 'get',
-        baseURL: apiBaseUrl,
-        url: '/v1/pages',
-        params: { page },
-     })
-      .then(({ data }) => {
-        this.fetchStatePages = 'success';
-        this.pages = data.pages.map(e => (
-          { ...e, url: `#/pages/${e.id}` }
-        ));
-        this.countPagination = parseInt(data.countPagination);
-      })
-      .catch((err) => { console.log(err) })
-    },
     paginationHandler(numPagination) {
-      this.numCurrentPagination=numPagination;
-      this.fetchPages(numPagination)
+      this.$store.commit('updateNumCurrentPagination', numPagination);
+      this.$store.dispatch('fetchPages', numPagination);
     }
   },
   created() {
-    const numCurrentPagination = this.$store.getters.numCurrentPagination;
-    this.numCurrentPagination = numCurrentPagination;
-    this.fetchPages(numCurrentPagination);
+    const { numCurrentPagination } = this.$store.state.UIPages;
+    this.$store.dispatch('fetchPages', numCurrentPagination);
+  },
+  computed: {
+    pages() {
+      return this.$store.state.pages;
+    },
+    numCurrentPagination() {
+      return this.$store.state.UIPages.numCurrentPagination;
+    },
+    countPagination() {
+      return this.$store.state.UIPages.countPagination;
+    },
+    stateFetchPages() {
+      return this.$store.state.UIPages.stateFetch;
+    },
   },
 }
 </script>
