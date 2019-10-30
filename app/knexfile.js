@@ -27,6 +27,7 @@ const config = {
       password: 'blt5_test',
       database: 'blt5_test',
     },
+    useNullAsDefault: true,
     migrations: {
       directory: path.join(BASE_PATH, 'migrations'),
     },

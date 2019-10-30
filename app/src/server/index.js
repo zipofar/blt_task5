@@ -3,6 +3,7 @@ const bodyParser = require('koa-bodyparser');
 const session = require('koa-session');
 const CSRF = require('koa-csrf');
 
+const initState = require('../initAppState');
 const indexRoute = require('./routes/index');
 const userRoute = require('./routes/users');
 const pageRoute = require('./routes/pages');
@@ -31,11 +32,25 @@ app.use(async (ctx, next) => {
 });
 
 app.use(bodyParser());
-app.use(new CSRF());
+
+// Init App State
 app.use(async (ctx, next) => {
-  ctx.cookies.set('csrf', ctx.csrf, { httpOnly: false });
+  if (typeof ctx.session.state === 'undefined') {
+    ctx.session.state = { ...initState };
+  }
+  ctx.body = { state: ctx.session.state };
   await next();
 });
+
+// Set CSRF
+if (appEnv !== 'test') {
+  app.use(new CSRF());
+  app.use(async (ctx, next) => {
+    ctx.cookies.set('csrf', ctx.csrf, { httpOnly: false });
+    await next();
+  });
+}
+
 app.use(indexRoute.routes());
 app.use(appStateRoute.middleware());
 app.use(registrationRoute.middleware());

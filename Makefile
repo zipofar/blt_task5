@@ -26,7 +26,7 @@ dev:
 compose: install migrate seed dev
 
 test:
-	docker-compose -f docker-compose_dev.yml run app_server npx mocha --timeout 5000
+	docker-compose -f docker-compose_dev.yml run -e APP_ENV=test app_server npx mocha --timeout 5000 --exit
 
 kill:
 	docker-compose -f docker-compose_dev.yml kill
