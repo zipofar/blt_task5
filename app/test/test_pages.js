@@ -15,6 +15,7 @@ describe('API Pages', () => {
 
   const session = {};
 
+  /*
   before(async () => {
     await knex.migrate.rollback();
     await knex.migrate.latest();
@@ -22,6 +23,7 @@ describe('API Pages', () => {
     const resLogin = await chai.request(server).post('/api/v1/auth/login').type('json').send(userCredentials);
     session.jwt = resLogin.body.data;
   });
+  */
 
   beforeEach(async () => {
     await knex.migrate.rollback();
@@ -39,13 +41,12 @@ describe('API Pages', () => {
       .send();
 
     res.should.have.status(200);
-    res.should.be.json;
     res.body.should.be.a('object');
-    res.body.data.should.be.a('array');
-    res.body.data.length.should.equal(5);
-    res.body.data[0].id.should.equal(1);
-    res.body.data[0].title.should.equal('Title 0');
-    res.body.data[0].user_id.should.equal(1);
+    res.body.pages.should.be.a('array');
+    res.body.pages.length.should.equal(5);
+    res.body.pages[0].id.should.equal(1);
+    res.body.pages[0].title.should.equal('Title 0');
+    res.body.pages[0].user_id.should.equal(1);
   });
 
   it('should return second 5 pages', async () => {
@@ -54,12 +55,11 @@ describe('API Pages', () => {
       .send();
 
     res.should.have.status(200);
-    res.should.be.json;
     res.body.should.be.a('object');
-    res.body.data.should.be.a('array');
-    res.body.data.length.should.equal(5);
-    res.body.data[0].should.have.property('id');
-    res.body.data[0].id.should.equal(6);
+    res.body.pages.should.be.a('array');
+    res.body.pages.length.should.equal(5);
+    res.body.pages[0].should.have.property('id');
+    res.body.pages[0].id.should.equal(6);
   });
 
   it('should return 404 when no more pages', async () => {
@@ -68,7 +68,6 @@ describe('API Pages', () => {
       .send();
 
     res.should.have.status(404);
-    res.should.be.json;
   });
 
   it('should return first 5 pages when offset page is letter', async () => {
@@ -77,10 +76,9 @@ describe('API Pages', () => {
       .send();
 
     res.should.have.status(200);
-    res.should.be.json;
     res.body.should.be.a('object');
-    res.body.data.should.be.a('array');
-    res.body.data.length.should.equal(5);
+    res.body.pages.should.be.a('array');
+    res.body.pages.length.should.equal(5);
   });
 
   it('should return page with id = 1', async () => {
@@ -89,19 +87,28 @@ describe('API Pages', () => {
       .send();
 
     res.should.have.status(200);
-    res.should.be.json;
-    res.body.data.should.be.a('object');
-    res.body.data.id.should.equal(1);
-    res.body.data.title.should.equal('Title 0');
-    res.body.data.greeting.should.equal('Greeting 0');
-    res.body.data.content.should.equal('Content 0');
-    res.body.data.user_id.should.equal(1);
+    res.body.should.be.a('object');
+    res.body.id.should.equal(1);
+    res.body.title.should.equal('Title 0');
+    res.body.greeting.should.equal('Greeting 0');
+    res.body.content.should.equal('Content 0');
+    res.body.user_id.should.equal(1);
   });
 
   it('should create new page', async () => {
+    const resLogin = await chai.request(server)
+      .post('/api/v1/auth/login')
+      .type('json')
+      .send({
+        username: 'user1',
+        password: 'pass1',
+      });
+    const cookie = resLogin.headers['set-cookie'];
+    console.log(cookie)
+
     const res = await chai.request(server)
       .post('/api/v1/pages')
-      .set('Authorization', `Bearer ${session.jwt}`)
+      .set('Cookie', cookie)
       .type('json')
       .send({
         title: 'New Title',
@@ -110,12 +117,11 @@ describe('API Pages', () => {
       });
 
     res.should.have.status(200);
-    res.should.be.json;
-    res.body.data.should.be.a('object');
-    res.body.data.title.should.equal('New Title');
-    res.body.data.greeting.should.equal('New Greeting');
-    res.body.data.content.should.equal('New Content');
-    res.body.data.user_id.should.equal(2);
+    res.body.should.be.a('object');
+    res.body.title.should.equal('New Title');
+    res.body.greeting.should.equal('New Greeting');
+    res.body.content.should.equal('New Content');
+    res.body.user_id.should.equal(2);
   });
 
 });

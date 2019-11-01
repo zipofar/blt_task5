@@ -26,14 +26,12 @@ describe('API Login', () => {
         username: 'user1',
         password: 'pass1',
       });
-    console.log(res)
 
     res.should.have.status(200);
     res.should.be.json;
     res.body.should.be.a('object');
   });
 
-  /*
   it('should return error, if username not exist', async () => {
     const res = await chai.request(server)
       .post('/api/v1/auth/login')
@@ -63,5 +61,4 @@ describe('API Login', () => {
     res.body.should.be.a('object');
     res.body.message.should.equal('Login or Password Incorrect');
   });
-  */
 });

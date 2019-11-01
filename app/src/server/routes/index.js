@@ -4,9 +4,8 @@ const router = new Router();
 
 router.get('/api/v1', async (ctx) => {
   ctx.body = {
-    data: {
-      message: 'Hello from test project',
-    },
+    ...ctx.body,
+    message: 'Hello from test project',
   };
 });
 

@@ -62,9 +62,9 @@ const store = new Vuex.Store({
         const res = await axios({
           method: 'get',
           baseURL: apiBaseUrl,
-          url: '/v1/service/app_state',
+          url: '/v1',
         });
-        ctx.commit('updateState', res.data);
+        ctx.commit('updateState', res.data.state);
       } catch (err) {
         errorHandler(err);
       }

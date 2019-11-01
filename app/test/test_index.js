@@ -17,7 +17,8 @@ describe('API Index', () => {
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.a('object');
-        res.body.data.should.have.property('message');
+        res.body.should.have.property('message');
+        res.body.should.have.property('state');
         done();
       });
   });
