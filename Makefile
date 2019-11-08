@@ -33,8 +33,8 @@ kill:
 
 reload: kill dev
 
-app-bash:
-	docker-compose -f docker-compose_dev.yml exec -it app_server bash
+clear:
+	sudo rm -rf postgres && rm -rf tmp
 
 ansible-vaults-encrypt:
 	ansible-vault encrypt ansible/production/group_vars/all/vault.yml
