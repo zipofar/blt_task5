@@ -16,6 +16,7 @@
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.4",
+    "cookieparser": "^0.1.0",
     "core-js": "^2.6.10",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.16.5",

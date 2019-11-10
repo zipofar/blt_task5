@@ -58,7 +58,7 @@ router.route({
       return;
     }
     const { user } = ctx.session.state;
-    const newPage = await q.create({ ...ctx.request.body, user_id: user.userId });
+    const newPage = await q.create({ ...ctx.request.body, user_id: user.id });
     ctx.body = newPage;
   },
 });

@@ -25,10 +25,9 @@ describe('API Registration', () => {
       .send({ username: 'newUser', password: 'pass1' });
 
     res.should.have.status(201);
-    res.should.be.json;
     res.body.should.be.a('object');
-    res.body.data.username.should.equal('newUser');
-    res.body.data.role.should.equal('user');
+    res.body.username.should.equal('newUser');
+    res.body.role.should.equal('user');
   });
 
   it('should return user exist', async () => {

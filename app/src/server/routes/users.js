@@ -38,7 +38,7 @@ router.get('/api/v1/users/:id', async (ctx) => {
 
   if (user) {
     ctx.body = {
-      data: params(user).permit(permitParams),
+      user: params(user).permit(permitParams),
     };
   } else {
     ctx.throw(404, 'User not found');

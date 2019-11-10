@@ -4,27 +4,11 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../src/server');
 const knex = require('../src/server/db/connection');
+const utils = require('./utils');
 
 chai.use(chaiHttp);
 
 describe('API Pages', () => {
-  const userCredentials = {
-    username: 'user1',
-    password: 'pass1',
-  };
-
-  const session = {};
-
-  /*
-  before(async () => {
-    await knex.migrate.rollback();
-    await knex.migrate.latest();
-    await knex.seed.run();
-    const resLogin = await chai.request(server).post('/api/v1/auth/login').type('json').send(userCredentials);
-    session.jwt = resLogin.body.data;
-  });
-  */
-
   beforeEach(async () => {
     await knex.migrate.rollback();
     await knex.migrate.latest();
@@ -103,12 +87,12 @@ describe('API Pages', () => {
         username: 'user1',
         password: 'pass1',
       });
-    const cookie = resLogin.headers['set-cookie'];
-    console.log(cookie)
+    const cookies = resLogin.headers['set-cookie'];
+    const sessCookie = utils.parseCookie(cookies, /koa.sess/);
 
     const res = await chai.request(server)
       .post('/api/v1/pages')
-      .set('Cookie', cookie)
+      .set('Cookie', sessCookie)
       .type('json')
       .send({
         title: 'New Title',
