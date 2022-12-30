@@ -52,7 +52,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^22.19.0",
     "eslint-plugin-vue": "^5.2.3",
-    "mocha": "^6.2.1",
+    "mocha": "^10.2.0",
     "vue-template-compiler": "^2.6.10",
     "webpack-dev-middleware": "^3.7.2"
   },
