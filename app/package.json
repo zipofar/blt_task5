@@ -19,7 +19,7 @@
     "cookieparser": "^0.1.0",
     "core-js": "^2.6.10",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.16.5",
+    "knex": "^2.4.0",
     "koa": "^2.10.0",
     "koa-bodyparser": "^4.2.1",
     "koa-csrf": "^3.0.8",
